@@ -59,11 +59,14 @@ namespace Orchard.Mvc.ViewEngines.Razor {
         }
 
         public IViewEngine CreateModulesViewEngine(CreateModulesViewEngineParams parameters) {
-            var areaFormats = new[] {
-                                        "~/Core/{2}/Views/{1}/{0}.cshtml",
-                                        "~/Modules/{2}/Views/{1}/{0}.cshtml",
-                                        "~/Themes/{2}/Views/{1}/{0}.cshtml",
-                                    };
+            var areaFormats = new[] { "~/Themes/{2}/Views/{1}/{0}.cshtml" };
+
+            areaFormats = parameters.VirtualPaths
+                .SelectMany(x => new[] {
+                                           x + "/Views/{1}/{0}.cshtml",
+                                       })
+                .Union(areaFormats)
+                .ToArray();
 
             //Logger.Debug("AreaFormats (module): \r\n\t-{0}", string.Join("\r\n\t-", areaFormats));
 

@@ -7,6 +7,7 @@ using NUnit.Framework;
 using Orchard.Caching;
 using Orchard.Environment;
 using Orchard.Environment.Extensions.Compilers;
+using Orchard.Environment.Extensions.Folders;
 using Orchard.Environment.Extensions.Loaders;
 using Orchard.FileSystems.AppData;
 using Orchard.FileSystems.Dependencies;
@@ -151,8 +152,9 @@ namespace Orchard.Tests.Environment.Loaders {
                 IHostEnvironment hostEnvironment,
                 IAssemblyProbingFolder assemblyProbingFolder,
                 IDependenciesFolder dependenciesFolder,
-                IProjectFileParser projectFileParser)
-                : base(buildManager, virtualPathProvider, virtualPathMonitor, hostEnvironment, assemblyProbingFolder, dependenciesFolder, projectFileParser) {}
+                IProjectFileParser projectFileParser, 
+                IEnumerable<IExtensionFolders> extensionFolders)
+                : base(buildManager, virtualPathProvider, virtualPathMonitor, hostEnvironment, assemblyProbingFolder, dependenciesFolder, projectFileParser, extensionFolders) { }
 
             public IEnumerable<string> GetDependenciesAccessor(string projectPath) {
                 return GetDependencies(projectPath);

@@ -15,4 +15,9 @@ namespace Orchard.Environment.Extensions.Folders {
             return _extensionHarvester.HarvestExtensions(_paths, DefaultExtensionTypes.Module, "Module.txt", false/*isManifestOptional*/);
         }
     }
+
+    public class ModuleFolder : ModuleFolders {
+        public ModuleFolder(string path, IExtensionHarvester extensionHarvester) 
+            : base(new [] { path }, extensionHarvester) {}
+    }
 }

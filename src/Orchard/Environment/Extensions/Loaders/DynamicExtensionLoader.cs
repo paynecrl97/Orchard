@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Orchard.Caching;
 using Orchard.Environment.Extensions.Compilers;
+using Orchard.Environment.Extensions.Folders;
 using Orchard.Environment.Extensions.Models;
 using Orchard.FileSystems.Dependencies;
 using Orchard.FileSystems.VirtualPath;
@@ -22,6 +23,7 @@ namespace Orchard.Environment.Extensions.Loaders {
         private readonly IAssemblyProbingFolder _assemblyProbingFolder;
         private readonly IDependenciesFolder _dependenciesFolder;
         private readonly IProjectFileParser _projectFileParser;
+        private readonly IEnumerable<IExtensionFolders> _extensionFolders;
         private readonly ReloadWorkaround _reloadWorkaround = new ReloadWorkaround();
 
         public DynamicExtensionLoader(
@@ -31,7 +33,8 @@ namespace Orchard.Environment.Extensions.Loaders {
             IHostEnvironment hostEnvironment,
             IAssemblyProbingFolder assemblyProbingFolder,
             IDependenciesFolder dependenciesFolder,
-            IProjectFileParser projectFileParser)
+            IProjectFileParser projectFileParser,
+            IEnumerable<IExtensionFolders> extensionFolders)
             : base(dependenciesFolder) {
 
             _buildManager = buildManager;
@@ -40,6 +43,7 @@ namespace Orchard.Environment.Extensions.Loaders {
             _hostEnvironment = hostEnvironment;
             _assemblyProbingFolder = assemblyProbingFolder;
             _projectFileParser = projectFileParser;
+            _extensionFolders = extensionFolders;
             _dependenciesFolder = dependenciesFolder;
 
             Logger = NullLogger.Instance;
