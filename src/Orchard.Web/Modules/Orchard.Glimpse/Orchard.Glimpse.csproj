@@ -87,6 +87,10 @@
       <Name>Orchard.Core</Name>
       <Private>false</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Orchard.Caching\Orchard.Caching.csproj">
+      <Project>{7528BF74-25C7-4ABE-883A-443B4EEC4776}</Project>
+      <Name>Orchard.Caching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orchard.Users\Orchard.Users.csproj">
       <Project>{79AED36E-ABD0-4747-93D3-8722B042454B}</Project>
       <Name>Orchard.Users</Name>
@@ -97,16 +101,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlternateImplementation\GlimpseContentManager.cs" />
+    <Compile Include="AlternateImplementation\GlimpseCacheServiceDecorator.cs" />
+    <Compile Include="AlternateImplementation\GlimpseContentManagerDecorator.cs" />
+    <Compile Include="FeatureNames.cs" />
     <Compile Include="Extensions\ContentExtensions.cs" />
     <Compile Include="Extensions\TimespanExtensions.cs" />
-    <Compile Include="Tabs\ContentManager\ContentManagerMessage.cs" />
-    <Compile Include="Tabs\ContentManager\ContentManagerTab.cs" />
+    <Compile Include="Tabs\Cache\ContentManagerGetMessage.cs" />
+    <Compile Include="Tabs\Cache\ContentManagerGetMessagesConverter.cs" />
+    <Compile Include="Tabs\Cache\ContentManagerTab.cs" />
+    <Compile Include="Tabs\ContentManager\CacheMessage.cs" />
+    <Compile Include="Tabs\ContentManager\CacheTab.cs" />
     <Compile Include="Tabs\TimelineMessage.cs" />
     <Compile Include="Services\DefaultGlimpseService.cs" />
     <Compile Include="Services\IGlimpseService.cs" />
     <Compile Include="Models\TimedActionResult.cs" />
-    <Compile Include="Tabs\ContentManager\ContentManagerGetMessagesConverter.cs" />
+    <Compile Include="Tabs\ContentManager\CacheMessagesConverter.cs" />
+    <Compile Include="Tests\TestFilter.cs" />
     <Compile Include="TimelineCategories.cs" />
   </ItemGroup>
   <ItemGroup>

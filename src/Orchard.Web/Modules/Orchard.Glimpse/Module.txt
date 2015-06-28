@@ -10,3 +10,14 @@ Features:
     Orchard.Glimpse:
 		Name: Glimpse for Orchard
         Description: Brings Orchard specific tabs to the Glimpse panel.
+		Category: Glimpse
+    Orchard.Glimpse.Cache:
+		Name: Glimpse for Orchard Cache Service
+        Description: Adds Glimpse instrumentation to your current Cache Service.
+		Category: Glimpse
+		Dependencies: Orchard.Glimpse, Orchard.Caching
+    Orchard.Glimpse.ContentManager:
+		Name: Glimpse for Orchard Content Manager
+        Description: Adds Glimpse instrumentation to your current Content Manager.
+		Category: Glimpse
+		Dependencies: Orchard.Glimpse

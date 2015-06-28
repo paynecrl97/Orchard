@@ -5,8 +5,8 @@ using Glimpse.Core.Tab.Assist;
 using Orchard.Glimpse.Extensions;
 
 namespace Orchard.Glimpse.Tabs.ContentManager {
-    public class ContentManagerGetMessagesConverter : SerializationConverter<IEnumerable<ContentManagerMessage>> {
-        public override object Convert(IEnumerable<ContentManagerMessage> messages) {
+    public class ContentManagerGetMessagesConverter : SerializationConverter<IEnumerable<ContentManagerGetMessage>> {
+        public override object Convert(IEnumerable<ContentManagerGetMessage> messages) {
             var root = new TabSection("Content Id", "Content Type", "Name", "Version Options", "Duration");
             foreach (var message in messages.OrderByDescending(m => m.Duration)) {
                 root.AddRow()

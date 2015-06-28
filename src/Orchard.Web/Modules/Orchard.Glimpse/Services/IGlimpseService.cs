@@ -21,7 +21,8 @@ namespace Orchard.Glimpse.Services {
         TimedActionResult<T> Time<T>(Func<T> action);
 
         TimerResult PublishTimedAction(Action action, TimelineCategoryItem category, string eventName, string eventSubText = null);
-        TimerResult PublishTimedAction<T>(Action action, Func<T> messageFactory, TimelineCategoryItem category, string eventName, string eventSubText = null);
+        TimerResult PublishTimedAction<TMessage>(Action action, Func<TMessage> messageFactory, TimelineCategoryItem category, string eventName, string eventSubText = null);
+        TimerResult PublishTimedAction<TMessage>(Action action, Func<TimerResult, TMessage> messageFactory, TimelineCategoryItem category, string eventName, string eventSubText = null);
         TimedActionResult<T> PublishTimedAction<T>(Func<T> action, TimelineCategoryItem category, string eventName, string eventSubText = null);
         TimedActionResult<T> PublishTimedAction<T>(Func<T> action, TimelineCategoryItem category, Func<T, string> eventNameFactory, Func<T, string> eventSubTextFactory = null);
         TimedActionResult<T> PublishTimedAction<T, TMessage>(Func<T> action, Func<T, TimerResult, TMessage> messageFactory, TimelineCategoryItem category, string eventName, string eventSubText = null);

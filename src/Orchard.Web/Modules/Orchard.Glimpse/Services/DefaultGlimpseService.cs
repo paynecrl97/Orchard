@@ -60,10 +60,18 @@ namespace Orchard.Glimpse.Services {
             return timedResult;
         }
 
-        public TimerResult PublishTimedAction<T>(Action action, Func<T> messageFactory, TimelineCategoryItem category, string eventName, string eventSubText = null)
+        public TimerResult PublishTimedAction<TMessage>(Action action, Func<TMessage> messageFactory, TimelineCategoryItem category, string eventName, string eventSubText = null)
         {
             var timedResult = PublishTimedAction(action, category, eventName, eventSubText);
             PublishMessage(messageFactory());
+
+            return timedResult;
+        }
+
+        public TimerResult PublishTimedAction<TMessage>(Action action, Func<TimerResult, TMessage> messageFactory, TimelineCategoryItem category, string eventName, string eventSubText = null)
+        {
+            var timedResult = PublishTimedAction(action, category, eventName, eventSubText);
+            PublishMessage(messageFactory(timedResult));
 
             return timedResult;
         }

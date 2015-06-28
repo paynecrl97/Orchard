@@ -2,6 +2,7 @@
 using System.Xml.Linq;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData.Models;
+using Orchard.Environment.Extensions;
 using Orchard.Glimpse.Extensions;
 using Orchard.Glimpse.Services;
 using Orchard.Glimpse.Tabs.ContentManager;
@@ -10,12 +11,12 @@ using Orchard.Indexing;
 namespace Orchard.Glimpse.AlternateImplementation
 {
     [OrchardDecorator]
-    public class GlimpseContentManager : IContentManager
-    {
+    [OrchardFeature(FeatureNames.ContentManager)]
+    public class GlimpseContentManagerDecorator : IContentManager {
         private readonly IContentManager _decoratedService;
         private readonly IGlimpseService _glimpseService;
 
-        public GlimpseContentManager(IContentManager decoratedService, IGlimpseService glimpseService) {
+        public GlimpseContentManagerDecorator(IContentManager decoratedService, IGlimpseService glimpseService) {
             _decoratedService = decoratedService;
             _glimpseService = glimpseService;
         }
@@ -46,8 +47,7 @@ namespace Orchard.Glimpse.AlternateImplementation
 
         public ContentItem Get(int id)
         {
-            return _glimpseService.PublishTimedAction(() => _decoratedService.Get(id), (r, t) => new ContentManagerMessage
-            {
+            return _glimpseService.PublishTimedAction(() => _decoratedService.Get(id), (r, t) => new ContentManagerGetMessage {
                 ContentId = id,
                 ContentType = GetContentType(id, r),
                 Name = r.GetContentName(),
@@ -56,8 +56,7 @@ namespace Orchard.Glimpse.AlternateImplementation
         }
 
         public ContentItem Get(int id, VersionOptions options) {
-            return _glimpseService.PublishTimedAction(() => _decoratedService.Get(id, options), (r, t) => new ContentManagerMessage
-            {
+            return _glimpseService.PublishTimedAction(() => _decoratedService.Get(id, options), (r, t) => new ContentManagerGetMessage {
                 ContentId = id,
                 ContentType = GetContentType(id, r),
                 Name = r.GetContentName(),
@@ -67,8 +66,7 @@ namespace Orchard.Glimpse.AlternateImplementation
         }
 
         public ContentItem Get(int id, VersionOptions options, QueryHints hints) {
-            return _glimpseService.PublishTimedAction(() => _decoratedService.Get(id, options, hints), (r, t) => new ContentManagerMessage
-            {
+            return _glimpseService.PublishTimedAction(() => _decoratedService.Get(id, options, hints), (r, t) => new ContentManagerGetMessage {
                 ContentId = id,
                 ContentType = GetContentType(id, r),
                 Name = r.GetContentName(),
