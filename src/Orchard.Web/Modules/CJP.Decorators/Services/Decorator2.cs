@@ -1,3 +1,4 @@
+using Orchard;
 using Orchard.Environment.Extensions;
 using Orchard.Localization;
 using Orchard.UI.Notify;
