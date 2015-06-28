@@ -52,6 +52,15 @@
       <HintPath>..\..\lib\autofac\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Glimpse.AspNet">
+      <HintPath>..\..\lib\glimpse\AspNet 1.9.2\Glimpse.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Core">
+      <HintPath>..\..\lib\glimpse\Core 1.8.6\Glimpse.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Mvc5">
+      <HintPath>..\..\lib\glimpse\MVC 1.5.3\Glimpse.Mvc5.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Owin.Host.SystemWeb">
       <HintPath>..\..\lib\owin\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
     </Reference>

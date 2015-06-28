@@ -1,0 +1,12 @@
+﻿Name: Orchard.Glimpse
+AntiForgery: enabled
+Author: The Orchard Team
+Website: http://orchardproject.net
+Version: 1.0
+OrchardVersion: 1.9
+Description: Brings Orchard specific tabs to the Glimpse panel.
+Path: Glimpse
+Features:
+    Orchard.Glimpse:
+		Name: Glimpse for Orchard
+        Description: Brings Orchard specific tabs to the Glimpse panel.
