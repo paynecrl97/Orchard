@@ -2,6 +2,9 @@
 using System.Xml.Linq;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData.Models;
+using Orchard.Glimpse.Extensions;
+using Orchard.Glimpse.Services;
+using Orchard.Glimpse.Tabs.ContentManager;
 using Orchard.Indexing;
 
 namespace Orchard.Glimpse.AlternateImplementation
@@ -10,9 +13,11 @@ namespace Orchard.Glimpse.AlternateImplementation
     public class GlimpseContentManager : IContentManager
     {
         private readonly IContentManager _decoratedService;
+        private readonly IGlimpseService _glimpseService;
 
-        public GlimpseContentManager(IContentManager decoratedService) {
+        public GlimpseContentManager(IContentManager decoratedService, IGlimpseService glimpseService) {
             _decoratedService = decoratedService;
+            _glimpseService = glimpseService;
         }
 
         public IEnumerable<ContentTypeDefinition> GetContentTypeDefinitions() {
@@ -39,16 +44,37 @@ namespace Orchard.Glimpse.AlternateImplementation
             return _decoratedService.Restore(contentItem, options);
         }
 
-        public ContentItem Get(int id) {
-            return _decoratedService.Get(id);
+        public ContentItem Get(int id)
+        {
+            return _glimpseService.PublishTimedAction(() => _decoratedService.Get(id), (r, t) => new ContentManagerMessage
+            {
+                ContentId = id,
+                ContentType = GetContentType(id, r),
+                Name = r.GetContentName(),
+                Duration = t.Duration
+            }, TimelineCategories.ContentManager, r => "Get: " + GetContentType(id, r), r => r.GetContentName()).ActionResult;
         }
 
         public ContentItem Get(int id, VersionOptions options) {
-            return _decoratedService.Get(id, options);
+            return _glimpseService.PublishTimedAction(() => _decoratedService.Get(id, options), (r, t) => new ContentManagerMessage
+            {
+                ContentId = id,
+                ContentType = GetContentType(id, r),
+                Name = r.GetContentName(),
+                Duration = t.Duration,
+                VersionOptions = options
+            }, TimelineCategories.ContentManager, r => "Get: " + GetContentType(id, r), r => r.GetContentName()).ActionResult;
         }
 
         public ContentItem Get(int id, VersionOptions options, QueryHints hints) {
-            return _decoratedService.Get(id, options, hints);
+            return _glimpseService.PublishTimedAction(() => _decoratedService.Get(id, options, hints), (r, t) => new ContentManagerMessage
+            {
+                ContentId = id,
+                ContentType = GetContentType(id, r),
+                Name = r.GetContentName(),
+                Duration = t.Duration,
+                VersionOptions = options
+            }, TimelineCategories.ContentManager, r => "Get: " + GetContentType(id, r), r => r.GetContentName()).ActionResult;
         }
 
         public IEnumerable<ContentItem> GetAllVersions(int id) {
@@ -141,6 +167,18 @@ namespace Orchard.Glimpse.AlternateImplementation
 
         public dynamic UpdateEditor(IContent content, IUpdateModel updater, string groupId = "") {
             return _decoratedService.UpdateEditor(content, updater, groupId);
+        }
+
+        private string GetContentType(int id, ContentItem item, VersionOptions options = null) {
+            if (item != null) {
+                return item.ContentType;
+            }
+
+            if (options == null) {
+                return "Unknown content type.";
+            }
+
+            return (options.VersionRecordId == 0) ? string.Format("Content item: {0} is not published.", id) : "Unknown content type.";
         }
     }
 }

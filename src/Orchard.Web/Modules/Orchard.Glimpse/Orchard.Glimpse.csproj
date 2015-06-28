@@ -87,15 +87,28 @@
       <Name>Orchard.Core</Name>
       <Private>false</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Orchard.Users\Orchard.Users.csproj">
+      <Project>{79AED36E-ABD0-4747-93D3-8722B042454B}</Project>
+      <Name>Orchard.Users</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Widgets\Orchard.Widgets.csproj">
+      <Project>{194D3CCC-1153-474D-8176-FDE8D7D0D0BD}</Project>
+      <Name>Orchard.Widgets</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlternateImplementation\GlimpseContentManager.cs" />
+    <Compile Include="Extensions\ContentExtensions.cs" />
+    <Compile Include="Extensions\TimespanExtensions.cs" />
+    <Compile Include="Tabs\TimelineMessage.cs" />
+    <Compile Include="Services\DefaultGlimpseService.cs" />
+    <Compile Include="Services\IGlimpseService.cs" />
+    <Compile Include="Models\TimedActionResult.cs" />
+    <Compile Include="Tabs\ContentManager\Class1.cs" />
     <Compile Include="TimelineCategories.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
-    <Folder Include="Tabs\" />
     <Folder Include="Views\" />
   </ItemGroup>
   <PropertyGroup>
