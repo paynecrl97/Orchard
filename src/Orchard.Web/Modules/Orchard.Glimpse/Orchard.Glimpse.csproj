@@ -100,11 +100,13 @@
     <Compile Include="AlternateImplementation\GlimpseContentManager.cs" />
     <Compile Include="Extensions\ContentExtensions.cs" />
     <Compile Include="Extensions\TimespanExtensions.cs" />
+    <Compile Include="Tabs\ContentManager\ContentManagerMessage.cs" />
+    <Compile Include="Tabs\ContentManager\ContentManagerTab.cs" />
     <Compile Include="Tabs\TimelineMessage.cs" />
     <Compile Include="Services\DefaultGlimpseService.cs" />
     <Compile Include="Services\IGlimpseService.cs" />
     <Compile Include="Models\TimedActionResult.cs" />
-    <Compile Include="Tabs\ContentManager\Class1.cs" />
+    <Compile Include="Tabs\ContentManager\ContentManagerGetMessagesConverter.cs" />
     <Compile Include="TimelineCategories.cs" />
   </ItemGroup>
   <ItemGroup>
