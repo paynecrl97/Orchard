@@ -2,6 +2,7 @@
 using Orchard.Caching.Services;
 using Orchard.Environment.Extensions;
 using Orchard.Glimpse.Services;
+using Orchard.Glimpse.Tabs.Cache;
 using Orchard.Glimpse.Tabs.ContentManager;
 
 namespace Orchard.Glimpse.AlternateImplementation

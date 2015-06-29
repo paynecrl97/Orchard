@@ -3,7 +3,7 @@ using Glimpse.Core.Extensibility;
 using Glimpse.Core.Tab.Assist;
 using Orchard.Glimpse.Extensions;
 
-namespace Orchard.Glimpse.Tabs.ContentManager {
+namespace Orchard.Glimpse.Tabs.Cache {
     public class CacheMessagesConverter : SerializationConverter<IEnumerable<CacheMessage>> {
         public override object Convert(IEnumerable<CacheMessage> messages) {
             var root = new TabSection("Action", "Valid For", "Key", "Result", "Value", "Time Taken");

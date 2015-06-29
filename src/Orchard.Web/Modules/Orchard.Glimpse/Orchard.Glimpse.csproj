@@ -109,19 +109,19 @@
     <Compile Include="Extensions\TimespanExtensions.cs" />
     <Compile Include="Models\IDurationMessage.cs" />
     <Compile Include="Extensions\TabSectionExtensions.cs" />
-    <Compile Include="Tabs\Cache\ContentManagerGetMessage.cs" />
-    <Compile Include="Tabs\Cache\ContentManagerGetMessagesConverter.cs" />
-    <Compile Include="Tabs\Cache\ContentManagerTab.cs" />
+    <Compile Include="Tabs\ContentManager\ContentManagerGetMessage.cs" />
+    <Compile Include="Tabs\ContentManager\ContentManagerGetMessagesConverter.cs" />
+    <Compile Include="Tabs\ContentManager\ContentManagerTab.cs" />
     <Compile Include="Tabs\Authorizer\CacheMessage.cs" />
     <Compile Include="Tabs\Authorizer\CacheMessagesConverter.cs" />
     <Compile Include="Tabs\Authorizer\AuthorizerTab.cs" />
-    <Compile Include="Tabs\ContentManager\CacheMessage.cs" />
-    <Compile Include="Tabs\ContentManager\CacheTab.cs" />
+    <Compile Include="Tabs\Cache\CacheMessage.cs" />
+    <Compile Include="Tabs\Cache\CacheTab.cs" />
     <Compile Include="Tabs\TimelineMessage.cs" />
     <Compile Include="Services\DefaultGlimpseService.cs" />
     <Compile Include="Services\IGlimpseService.cs" />
     <Compile Include="Models\TimedActionResult.cs" />
-    <Compile Include="Tabs\ContentManager\CacheMessagesConverter.cs" />
+    <Compile Include="Tabs\Cache\CacheMessagesConverter.cs" />
     <Compile Include="Tests\TestFilter.cs" />
     <Compile Include="TimelineCategories.cs" />
   </ItemGroup>
