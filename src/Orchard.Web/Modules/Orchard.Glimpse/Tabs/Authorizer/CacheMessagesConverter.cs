@@ -6,12 +6,14 @@ using Orchard.Glimpse.Extensions;
 namespace Orchard.Glimpse.Tabs.Authorizer {
     public class AuthorizerMessagesConverter : SerializationConverter<IEnumerable<AuthorizerMessage>> {
         public override object Convert(IEnumerable<AuthorizerMessage> messages) {
-            var root = new TabSection("Permission", "Content", "Result", "Message", "Time Taken");
+            var root = new TabSection("Permission", "Content Id", "Content Type", "Content Name", "User Is Authorized?", "Message", "Time Taken");
             foreach (var message in messages) {
                 root.AddRow()
                     .Column(message.Permission)
-                    .Column(message.Content)
-                    .Column(message.Result)
+                    .Column(message.Content == null ? null : message.Content.Id.ToString())
+                    .Column(message.Content == null ? null : message.Content.ContentItem.ContentType)
+                    .Column(message.Content == null ? null : message.Content.ContentItem.GetContentName())
+                    .Column(message.Result ? "Yes" : "No")
                     .Column(message.Result ? null : message.Message)
                     .Column(message.Duration.ToTimingString());
             }
