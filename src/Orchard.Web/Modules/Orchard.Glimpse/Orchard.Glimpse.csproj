@@ -112,8 +112,8 @@
     <Compile Include="Tabs\ContentManager\ContentManagerGetMessage.cs" />
     <Compile Include="Tabs\ContentManager\ContentManagerGetMessagesConverter.cs" />
     <Compile Include="Tabs\ContentManager\ContentManagerTab.cs" />
-    <Compile Include="Tabs\Authorizer\CacheMessage.cs" />
-    <Compile Include="Tabs\Authorizer\CacheMessagesConverter.cs" />
+    <Compile Include="Tabs\Authorizer\AuthorizerMessage.cs" />
+    <Compile Include="Tabs\Authorizer\AuthorizerMessagesConverter.cs" />
     <Compile Include="Tabs\Authorizer\AuthorizerTab.cs" />
     <Compile Include="Tabs\Cache\CacheMessage.cs" />
     <Compile Include="Tabs\Cache\CacheTab.cs" />
