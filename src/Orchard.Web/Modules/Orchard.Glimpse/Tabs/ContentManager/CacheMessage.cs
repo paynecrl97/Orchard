@@ -1,9 +1,9 @@
 ﻿using System;
 using Glimpse.Core.Message;
-using Orchard.ContentManagement;
+using Orchard.Glimpse.Models;
 
 namespace Orchard.Glimpse.Tabs.ContentManager {
-    public class CacheMessage : MessageBase {
+    public class CacheMessage : MessageBase, IDurationMessage {
         public string Action { get; set; }
         public string Key { get; set; }
         public object Value { get; set; }

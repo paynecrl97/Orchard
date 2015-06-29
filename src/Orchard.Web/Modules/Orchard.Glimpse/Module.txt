@@ -11,6 +11,11 @@ Features:
 		Name: Glimpse for Orchard
         Description: Brings Orchard specific tabs to the Glimpse panel.
 		Category: Glimpse
+    Orchard.Glimpse.Authorizer:
+		Name: Glimpse for Orchard Authorizer
+        Description: Adds Glimpse instrumentation to your Authorizer service.
+		Category: Glimpse
+		Dependencies: Orchard.Glimpse
     Orchard.Glimpse.Cache:
 		Name: Glimpse for Orchard Cache Service
         Description: Adds Glimpse instrumentation to your current Cache Service.

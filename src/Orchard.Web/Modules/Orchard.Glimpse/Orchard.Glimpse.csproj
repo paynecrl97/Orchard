@@ -101,14 +101,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlternateImplementation\GlimpseAuthorizerDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseCacheServiceDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseContentManagerDecorator.cs" />
     <Compile Include="FeatureNames.cs" />
     <Compile Include="Extensions\ContentExtensions.cs" />
     <Compile Include="Extensions\TimespanExtensions.cs" />
+    <Compile Include="Models\IDurationMessage.cs" />
+    <Compile Include="Extensions\TabSectionExtensions.cs" />
     <Compile Include="Tabs\Cache\ContentManagerGetMessage.cs" />
     <Compile Include="Tabs\Cache\ContentManagerGetMessagesConverter.cs" />
     <Compile Include="Tabs\Cache\ContentManagerTab.cs" />
+    <Compile Include="Tabs\Authorizer\CacheMessage.cs" />
+    <Compile Include="Tabs\Authorizer\CacheMessagesConverter.cs" />
+    <Compile Include="Tabs\Authorizer\AuthorizerTab.cs" />
     <Compile Include="Tabs\ContentManager\CacheMessage.cs" />
     <Compile Include="Tabs\ContentManager\CacheTab.cs" />
     <Compile Include="Tabs\TimelineMessage.cs" />

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Glimpse.Core.Extensibility;
 using Glimpse.Core.Tab.Assist;
 using Orchard.Glimpse.Extensions;
@@ -19,14 +17,7 @@ namespace Orchard.Glimpse.Tabs.ContentManager {
                     .Column(message.Duration.ToTimingString());
             }
 
-            root.AddRow()
-                .Column("")
-                .Column("")
-                .Column("")
-                .Column("")
-                .Column("Total time:")
-                .Column(messages.Sum(m => m.Duration.TotalMilliseconds).ToTimingString())
-                .Selected();
+            root.AddTimingSummary(messages);
 
             return root.Build();
         }
