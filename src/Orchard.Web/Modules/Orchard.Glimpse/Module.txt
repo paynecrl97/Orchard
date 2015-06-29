@@ -26,3 +26,8 @@ Features:
         Description: Adds Glimpse instrumentation to your current Content Manager.
 		Category: Glimpse
 		Dependencies: Orchard.Glimpse
+    Orchard.Glimpse.Shapes:
+		Name: Glimpse for Orchard Shapes
+        Description: Adds Glimpse instrumentation to your Shapes.
+		Category: Glimpse
+		Dependencies: Orchard.Glimpse

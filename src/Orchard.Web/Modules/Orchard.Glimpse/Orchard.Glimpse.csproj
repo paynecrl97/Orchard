@@ -101,6 +101,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlternateImplementation\GlimpseDisplayManager.cs" />
     <Compile Include="AlternateImplementation\GlimpseAuthorizerDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseCacheServiceDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseContentManagerDecorator.cs" />
@@ -109,6 +110,9 @@
     <Compile Include="Extensions\TimespanExtensions.cs" />
     <Compile Include="Models\IDurationMessage.cs" />
     <Compile Include="Extensions\TabSectionExtensions.cs" />
+    <Compile Include="Tabs\Shapes\ShapesMessage.cs" />
+    <Compile Include="Tabs\Shapes\ShapesMessagesConverter.cs" />
+    <Compile Include="Tabs\Shapes\ShapesTab.cs" />
     <Compile Include="Tabs\ContentManager\ContentManagerGetMessage.cs" />
     <Compile Include="Tabs\ContentManager\ContentManagerGetMessagesConverter.cs" />
     <Compile Include="Tabs\ContentManager\ContentManagerTab.cs" />
