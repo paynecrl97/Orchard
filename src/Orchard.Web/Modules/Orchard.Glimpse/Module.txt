@@ -31,3 +31,8 @@ Features:
         Description: Adds Glimpse instrumentation to your Shapes.
 		Category: Glimpse
 		Dependencies: Orchard.Glimpse
+    Orchard.Glimpse.Widgets:
+		Name: Glimpse for Orchard Widgets
+        Description: Adds Glimpse instrumentation to your Widgets.
+		Category: Glimpse
+		Dependencies: Orchard.Glimpse
