@@ -9,26 +9,17 @@ namespace Orchard.Glimpse.Tabs.Shapes {
         public override object Convert(IEnumerable<ShapeMessage> messages) {
             var root = new TabSection("Type", "Display Type", "Position", "Placement Source", "Prefix", "Binding Source", "Available Binding Sources", "Wrappers", "Alternates", "Build Display Duration");
             foreach (var message in messages) {
-                if (message.Type != "Layout" //these exemptions are taken from the Shape Tracing Feature
-                    && message.Type != "DocumentZone"
-                    && message.Type != "PlaceChildContent"
-                    && message.Type != "ContentZone"
-                    && message.Type != "ShapeTracingMeta"
-                    && message.Type != "ShapeTracingTemplates"
-                    && message.Type != "DateTimeRelative")
-                {
-                    root.AddRow()
-                        .Column(message.Type)
-                        .Column(message.DisplayType)
-                        .Column(message.Position)
-                        .Column(message.PlacementSource)
-                        .Column(message.Prefix)
-                        .Column(message.BindingSource)
-                        .Column(message.BindingSources)
-                        .Column(message.Wrappers)
-                        .Column(message.Alternates)
-                        .Column(message.Duration.ToTimingString());
-                }
+                root.AddRow()
+                    .Column(message.Type)
+                    .Column(message.DisplayType)
+                    .Column(message.Position)
+                    .Column(message.PlacementSource)
+                    .Column(message.Prefix)
+                    .Column(message.BindingSource)
+                    .Column(message.BindingSources)
+                    .Column(message.Wrappers)
+                    .Column(message.Alternates)
+                    .Column(message.Duration.ToTimingString());
             }
 
             return root.Build();
