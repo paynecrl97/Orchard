@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Orchard.ContentManagement;
+﻿using Orchard.ContentManagement;
 using Orchard.Environment.Extensions;
 using Orchard.Glimpse.Services;
 using Orchard.Glimpse.Tabs.Authorizer;
@@ -13,9 +9,8 @@ using Orchard.Security.Permissions;
 namespace Orchard.Glimpse.AlternateImplementation
 {
     [OrchardDecorator]
-    [OrchardFeature("Orchard.Glimpse.Authorizer")]
-    public class GlimpseAuthorizerDecorator : IAuthorizer
-    {
+    [OrchardFeature(FeatureNames.Authorizer)]
+    public class GlimpseAuthorizerDecorator : IAuthorizer {
         private readonly IAuthorizer _decoratedService;
         private readonly IGlimpseService _glimpseService;
 
