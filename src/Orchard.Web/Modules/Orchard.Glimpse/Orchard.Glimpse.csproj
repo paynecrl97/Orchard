@@ -51,6 +51,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\nhibernate\FluentNHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="Glimpse.Ado">
+      <HintPath>..\..\..\..\lib\glimpse\Ado 1.7.3\Glimpse.Ado.dll</HintPath>
+    </Reference>
     <Reference Include="Glimpse.Core">
       <HintPath>..\..\..\..\lib\glimpse\Core 1.8.6\Glimpse.Core.dll</HintPath>
     </Reference>
@@ -109,7 +112,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlternateImplementation\Class1.cs" />
+    <Compile Include="SQL\GlimpseSessionConfigurationEvents.cs" />
+    <Compile Include="SQL\GlimpseConnectionProvider.cs" />
+    <Compile Include="SQL\GlimpseDriver.cs" />
     <Compile Include="AlternateImplementation\GlimpseWidgetContentManagerDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseDisplayManager.cs" />
     <Compile Include="AlternateImplementation\GlimpseAuthorizerDecorator.cs" />

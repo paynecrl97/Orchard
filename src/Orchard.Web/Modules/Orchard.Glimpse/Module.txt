@@ -31,6 +31,11 @@ Features:
         Description: Adds Glimpse instrumentation to your Shapes.
 		Category: Glimpse
 		Dependencies: Orchard.Glimpse
+    Orchard.Glimpse.SQL:
+		Name: Glimpse for Orchard SQL
+        Description: Adds Glimpse instrumentation to your database calls.
+		Category: Glimpse
+		Dependencies: Orchard.Glimpse
     Orchard.Glimpse.Widgets:
 		Name: Glimpse for Orchard Widgets
         Description: Adds Glimpse instrumentation to your Widgets.
