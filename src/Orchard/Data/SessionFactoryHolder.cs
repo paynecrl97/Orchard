@@ -100,7 +100,9 @@ namespace Orchard.Data {
                     .BuildConfiguration(parameters)
                 .Cache(c => _cacheConfiguration.Configure(c))
             );
-            
+
+            //config.SetProperty("connection.provider", "Orchard.Glimpse.AlternateImplementation.GlimpseConnectionProvider, Orchard.Glimpse");
+
             #region NH specific optimization
             // cannot be done in fluent config
             // the IsSelectable = false prevents unused ContentPartRecord proxies from being created 

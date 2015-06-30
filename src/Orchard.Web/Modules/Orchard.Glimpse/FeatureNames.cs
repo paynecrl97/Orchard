@@ -5,6 +5,7 @@
         internal const string Cache = "Orchard.Glimpse.Cache";
         internal const string ContentManager = "Orchard.Glimpse.ContentManager";
         internal const string Shapes = "Orchard.Glimpse.Shapes";
+        internal const string SQL = "Orchard.Glimpse.SQL";
         internal const string Widgets = "Orchard.Glimpse.Widgets";
     }
 }

@@ -47,10 +47,21 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentNHibernate, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\nhibernate\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Ado">
+      <HintPath>..\..\..\..\lib\glimpse\Ado 1.7.3\Glimpse.Ado.dll</HintPath>
+    </Reference>
     <Reference Include="Glimpse.Core">
       <HintPath>..\..\..\..\lib\glimpse\Core 1.8.6\Glimpse.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\nhibernate\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -101,6 +112,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SQL\GlimpseSessionConfigurationEvents.cs" />
+    <Compile Include="SQL\GlimpseConnectionProvider.cs" />
+    <Compile Include="SQL\GlimpseDriver.cs" />
     <Compile Include="AlternateImplementation\GlimpseWidgetContentManagerDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseDisplayManager.cs" />
     <Compile Include="AlternateImplementation\GlimpseAuthorizerDecorator.cs" />
