@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using Autofac;
 using Autofac.Core;
 
+//Credit to LombiqTechnologies for this class- it's taken from their Helpful Libraries module
 namespace Orchard.Glimpse.AutofacModules {
     /// <summary>
-    /// A base class for an Autofac module that registers decorators for other services.
+    /// A base class for an Autofac module that registers decorators for other services. 
     /// </summary>
     public abstract class DecoratorsModuleBase : Module {
         private IEnumerable<DecorationConfiguration> _decorationConfigurations;
