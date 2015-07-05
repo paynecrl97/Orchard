@@ -8,11 +8,9 @@ using Orchard.Glimpse.Services;
 using Orchard.Glimpse.Tabs.ContentManager;
 using Orchard.Indexing;
 
-namespace Orchard.Glimpse.AlternateImplementation
-{
-    [OrchardDecorator]
+namespace Orchard.Glimpse.AlternateImplementation {
     [OrchardFeature(FeatureNames.ContentManager)]
-    public class GlimpseContentManagerDecorator : IContentManager {
+    internal class GlimpseContentManagerDecorator : IContentManager {
         private readonly IContentManager _decoratedService;
         private readonly IGlimpseService _glimpseService;
 

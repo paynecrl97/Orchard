@@ -47,6 +47,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\autofac\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="FluentNHibernate, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\nhibernate\FluentNHibernate.dll</HintPath>
@@ -112,6 +116,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutofacModules\AuthorizerDecoratorModule.cs" />
+    <Compile Include="AutofacModules\CacheServiceDecoratorModule.cs" />
+    <Compile Include="AutofacModules\ContentManagerDecoratorsModule.cs" />
+    <Compile Include="AutofacModules\DecoratorsModuleBase.cs" />
     <Compile Include="SQL\GlimpseSessionConfigurationEvents.cs" />
     <Compile Include="SQL\GlimpseConnectionProvider.cs" />
     <Compile Include="SQL\GlimpseDriver.cs" />
@@ -146,6 +154,7 @@
     <Compile Include="Tabs\Cache\CacheMessagesConverter.cs" />
     <Compile Include="Tests\TestFilter.cs" />
     <Compile Include="TimelineCategories.cs" />
+    <Compile Include="AutofacModules\WidgetContentManagerDecoratorModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />

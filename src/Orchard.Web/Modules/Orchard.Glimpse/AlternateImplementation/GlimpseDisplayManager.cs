@@ -20,8 +20,7 @@ namespace Orchard.Glimpse.AlternateImplementation
 {
     [OrchardFeature(FeatureNames.Shapes)]
     [OrchardSuppressDependency("Orchard.DisplayManagement.Implementation.DefaultDisplayManager")]
-    public class GlimpseDisplayManager : IDisplayManager
-    {
+    internal class GlimpseDisplayManager : IDisplayManager {
         private readonly Lazy<IShapeTableLocator> _shapeTableLocator;
         private readonly IGlimpseService _glimpseService;
         private readonly IWorkContextAccessor _workContextAccessor;
