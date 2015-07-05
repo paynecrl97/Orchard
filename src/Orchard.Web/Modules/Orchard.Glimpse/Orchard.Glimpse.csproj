@@ -116,6 +116,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlternateImplementation\GlimpseLayerEvaluationService.cs" />
     <Compile Include="AutofacModules\AuthorizerDecoratorModule.cs" />
     <Compile Include="AutofacModules\CacheServiceDecoratorModule.cs" />
     <Compile Include="AutofacModules\ContentManagerDecoratorsModule.cs" />
@@ -133,6 +134,9 @@
     <Compile Include="Extensions\TimespanExtensions.cs" />
     <Compile Include="Models\IDurationMessage.cs" />
     <Compile Include="Extensions\TabSectionExtensions.cs" />
+    <Compile Include="Tabs\Layers\LayerMessage.cs" />
+    <Compile Include="Tabs\Layers\LayerMessagesConverter.cs" />
+    <Compile Include="Tabs\Layers\LayerTab.cs" />
     <Compile Include="Tabs\Widgets\WidgetMessage.cs" />
     <Compile Include="Tabs\Widgets\WidgetMessagesConverter.cs" />
     <Compile Include="Tabs\Widgets\WidgetsTab.cs" />

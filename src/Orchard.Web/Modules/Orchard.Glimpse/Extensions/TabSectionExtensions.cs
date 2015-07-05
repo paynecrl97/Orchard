@@ -10,7 +10,7 @@ namespace Orchard.Glimpse.Extensions {
                 return;
             }
 
-            var columnCount = section.Rows.Last().Columns.Count();
+            var columnCount = section.Rows.First().Columns.Count();
 
             var row = section.AddRow();
 
