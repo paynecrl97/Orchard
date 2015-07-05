@@ -9,12 +9,13 @@ using Orchard.Environment.Configuration;
 
 namespace Orchard.Mvc.Routes {
 
-    public class HubRoute : RouteBase, IRouteWithArea, IComparable<HubRoute> {
+    public class HubRoute : Route, IRouteWithArea, IComparable<HubRoute> {
         private readonly IRunningShellTable _runningShellTable;
 
         private readonly ConcurrentDictionary<string, IList<RouteBase>> _routesByShell = new ConcurrentDictionary<string, IList<RouteBase>>();
 
-        public HubRoute(string name, string area, int priority, IRunningShellTable runningShellTable) {
+        public HubRoute(string name, string area, int priority, IRunningShellTable runningShellTable) 
+            : base("url", null) {
             Priority = priority;
             Area = area;
             Name = name;
@@ -102,6 +103,10 @@ namespace Orchard.Mvc.Routes {
             }
 
             return Priority.CompareTo(other.Priority);
+        }
+
+        public override string ToString() {
+            return "hello!";
         }
     }
 }

@@ -31,6 +31,11 @@ Features:
         Description: Adds Glimpse instrumentation to your current Layer Rule evalution.
 		Category: Glimpse
 		Dependencies: Orchard.Glimpse, Orchard.Widgets
+    Orchard.Glimpse.Routes:
+		Name: Glimpse for Orchard Routes
+        Description: Adds Glimpse instrumentation to your Routes.
+		Category: Glimpse
+		Dependencies: Orchard.Glimpse
     Orchard.Glimpse.Shapes:
 		Name: Glimpse for Orchard Shapes
         Description: Adds Glimpse instrumentation to your Shapes.

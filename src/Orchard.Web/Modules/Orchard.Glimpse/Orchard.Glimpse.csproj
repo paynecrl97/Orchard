@@ -102,6 +102,10 @@
       <Name>Orchard.Core</Name>
       <Private>false</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Orchard.Alias\Orchard.Alias.csproj">
+      <Project>{475B6C45-B27C-438B-8966-908B9D6D1077}</Project>
+      <Name>Orchard.Alias</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orchard.Caching\Orchard.Caching.csproj">
       <Project>{7528BF74-25C7-4ABE-883A-443B4EEC4776}</Project>
       <Name>Orchard.Caching</Name>
@@ -116,7 +120,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlternateImplementation\GlimpseAliasServiceDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseLayerEvaluationService.cs" />
+    <Compile Include="AutofacModules\AliasDecoratorModule.cs" />
     <Compile Include="AutofacModules\AuthorizerDecoratorModule.cs" />
     <Compile Include="AutofacModules\CacheServiceDecoratorModule.cs" />
     <Compile Include="AutofacModules\ContentManagerDecoratorsModule.cs" />
@@ -134,6 +140,9 @@
     <Compile Include="Extensions\TimespanExtensions.cs" />
     <Compile Include="Models\IDurationMessage.cs" />
     <Compile Include="Extensions\TabSectionExtensions.cs" />
+    <Compile Include="Tabs\Routes\RoutesMessage.cs" />
+    <Compile Include="Tabs\Routes\RoutesMessagesConverter.cs" />
+    <Compile Include="Tabs\Routes\RoutesTab.cs" />
     <Compile Include="Tabs\Layers\LayerMessage.cs" />
     <Compile Include="Tabs\Layers\LayerMessagesConverter.cs" />
     <Compile Include="Tabs\Layers\LayerTab.cs" />
