@@ -78,21 +78,31 @@ namespace Orchard.Environment.ShellBuilders {
                     var decorators = new List<KeyValuePair<DependencyBlueprint, string>>();
 
                     foreach (var item in blueprint.Dependencies.Where(t => typeof(IDependency).IsAssignableFrom(t.Type))) {
+                        var isEventHandler = typeof (IEventHandler).IsAssignableFrom(item.Type);
+                        var decoratorAttribute = item.Type.GetCustomAttribute<OrchardDecoratorAttribute>();
+                        var isDecorator = decoratorAttribute != null;
+
+                        if (isDecorator && isEventHandler) {
+                            Logger.Error(string.Format("Type `{0}` is annotated with the OrchardDependency attribute, but is also an IEventHandler. Decorating IEventHandlers is currently not supported. This decorator will not be registered.", item.Type.FullName));
+
+                            continue;
+                        }
+
                         var registration = RegisterType(builder, item)
                             .EnableDynamicProxy(dynamicProxyContext)
                             .InstancePerLifetimeScope();
 
-                        var decoratorAttribute = item.Type.GetCustomAttribute<OrchardDecoratorAttribute>();
-                        if (decoratorAttribute == null) {
+                        if (isDecorator) {
+                            decorators.Add(new KeyValuePair<DependencyBlueprint, string>(item, decoratorAttribute.Priority));
+                        }
+                        else {
                             foreach (var interfaceType in GetInterfacesFromBlueprint(item)) {
                                 registration = ConfigureRegistration(registration, interfaceType);
                             }
                         }
-                        else {
-                            decorators.Add(new KeyValuePair<DependencyBlueprint, string>(item, decoratorAttribute.Priority));
-                        }
 
-                        if (typeof(IEventHandler).IsAssignableFrom(item.Type)) {
+                        if (isEventHandler) {
+
                             var interfaces = item.Type.GetInterfaces();
                             foreach (var interfaceType in interfaces) {
 
