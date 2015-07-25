@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,13 +30,13 @@ namespace Orchard.Environment.ShellBuilders {
     public class ShellContainerFactory : IShellContainerFactory {
         private readonly ILifetimeScope _lifetimeScope;
         private readonly IShellContainerRegistrations _shellContainerRegistrations;
-        private readonly Dictionary<Type, List<string>> _registrationNames;
+        private readonly ConcurrentDictionary<Type, ConcurrentBag<string>> _registrationNames;
 
         public ShellContainerFactory(ILifetimeScope lifetimeScope, IShellContainerRegistrations shellContainerRegistrations) {
             _lifetimeScope = lifetimeScope;
             _shellContainerRegistrations = shellContainerRegistrations;
 
-            _registrationNames = new Dictionary<Type, List<string>>();
+            _registrationNames = new ConcurrentDictionary<Type, ConcurrentBag<string>>();
 
             Logger = NullLogger.Instance;
             T = NullLocalizer.Instance;
@@ -134,7 +135,7 @@ namespace Orchard.Environment.ShellBuilders {
                                 throw exception;
                             }
 
-                            var decoratorNames = new List<string>();
+                            var decoratorNames = new ConcurrentBag<string>();
 
                             foreach (var registrationName in _registrationNames[scopedInterfaceType]) { // loop over each implementation name that can be decorated
                                 var decorator = RegisterType(builder, kvp.Key);
@@ -222,8 +223,7 @@ namespace Orchard.Environment.ShellBuilders {
                 _registrationNames[interfaceType].Add(registrationName);
             }
             else {
-                _registrationNames[interfaceType] = new List<string>(); 
-                _registrationNames[interfaceType].Add(registrationName);
+                _registrationNames[interfaceType] = new ConcurrentBag<string> { registrationName };
             }
 
 
