@@ -111,6 +111,8 @@ AppPackages/
 
 # Others
 sql/
+# Don't exclude the Glimpse SQL folder
+!/src/Orchard.Web/Modules/Orchard.Glimpse/sql/
 *.Cache
 ClientBin/
 [Ss]tyle[Cc]op.*
