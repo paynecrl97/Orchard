@@ -6,9 +6,11 @@ using Orchard.Localization;
 using Orchard.Security;
 using Orchard.Security.Permissions;
 
-namespace Orchard.Glimpse.AlternateImplementation {
+namespace Orchard.Glimpse.AlternateImplementation
+{
+    [OrchardDecorator]
     [OrchardFeature(FeatureNames.Authorizer)]
-    internal class GlimpseAuthorizerDecorator : IAuthorizer {
+    public class GlimpseAuthorizerDecorator : IAuthorizer {
         private readonly IAuthorizer _decoratedService;
         private readonly IGlimpseService _glimpseService;
 

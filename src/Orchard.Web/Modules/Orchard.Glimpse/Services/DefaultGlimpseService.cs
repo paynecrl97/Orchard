@@ -116,7 +116,13 @@ namespace Orchard.Glimpse.Services {
         }
 
         public void PublishMessage<T>(T message) {
-            GetMessageBroker().Publish(message);
+            var broker = GetMessageBroker();
+
+            if (broker == null) {
+                return;
+            }
+
+            broker.Publish(message);
         }
 
         private IExecutionTimer GetTimer() { //todo: make this more robust and  make public

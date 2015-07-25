@@ -4,9 +4,12 @@ using Orchard.Environment.Extensions;
 using Orchard.Glimpse.Services;
 using Orchard.Glimpse.Tabs.Cache;
 
-namespace Orchard.Glimpse.AlternateImplementation {
+namespace Orchard.Glimpse.AlternateImplementation
+{
+    [OrchardDecorator]
     [OrchardFeature(FeatureNames.Cache)]
-    internal class GlimpseCacheServiceDecorator : ICacheService {
+    public class GlimpseCacheServiceDecorator : ICacheService
+    {
         private readonly ICacheService _decoratedService;
         private readonly IGlimpseService _glimpseService;
 
