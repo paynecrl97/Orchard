@@ -14,7 +14,6 @@ using Autofac.Features.Indexed;
 using Orchard.Environment.AutofacUtil;
 using Orchard.Environment.AutofacUtil.DynamicProxy2;
 using Orchard.Environment.Configuration;
-using Orchard.Environment.Extensions;
 using Orchard.Environment.ShellBuilders.Models;
 using Orchard.Events;
 using Orchard.Localization;
@@ -30,13 +29,13 @@ namespace Orchard.Environment.ShellBuilders {
     public class ShellContainerFactory : IShellContainerFactory {
         private readonly ILifetimeScope _lifetimeScope;
         private readonly IShellContainerRegistrations _shellContainerRegistrations;
-        private readonly Dictionary<Type, string> _registrationNames;
+        private readonly Dictionary<Type, List<string>> _registrationNames;
 
         public ShellContainerFactory(ILifetimeScope lifetimeScope, IShellContainerRegistrations shellContainerRegistrations) {
             _lifetimeScope = lifetimeScope;
             _shellContainerRegistrations = shellContainerRegistrations;
 
-            _registrationNames = new Dictionary<Type, string>();
+            _registrationNames = new Dictionary<Type, List<string>>();
 
             Logger = NullLogger.Instance;
             T = NullLocalizer.Instance;
@@ -112,25 +111,52 @@ namespace Orchard.Environment.ShellBuilders {
                         }
                     }
 
-                    foreach (var kvp in decorators.OrderBy(kvp=>kvp.Value, new FlatPositionComparer())) {
-                        var decorator = RegisterType(builder, kvp.Key);
+                    foreach (var kvp in decorators.OrderBy(kvp=>kvp.Value, new FlatPositionComparer())) { //for each decorator that has been discovered
 
-                        foreach (var interfaceType in GetInterfacesFromBlueprint(kvp.Key)){
+                        foreach (var interfaceType in GetInterfacesFromBlueprint(kvp.Key)){ //for each interface that the decorator implements
 
+                            // check to see if the interface has at least one implementation that can be decorated
                             var scopedInterfaceType = interfaceType;
-                            if (!_registrationNames.ContainsKey(scopedInterfaceType)){
-                                var exception = new OrchardFatalException(T("The only registered implementations of `{0}` are decorators. In order to avoid circular dependenices, there must be at least one implementation that is not also an implementation of `IDecorator`", interfaceType.FullName));
+                            if (!_registrationNames.ContainsKey(scopedInterfaceType) || _registrationNames[scopedInterfaceType] == null || !_registrationNames[scopedInterfaceType].Any()){
+                                var exception = new OrchardFatalException(T("The only registered implementations of `{0}` are decorators. In order to avoid circular dependenices, there must be at least one implementation that is not marked with the `OrchardDecorator` attribute.", interfaceType.FullName));
                                 Logger.Fatal(exception, "Could not complete dependency registration as a circular dependency chain has been found.");
 
                                 throw exception;
                             }
 
-                            var scopedName = _registrationNames[scopedInterfaceType];
-                            decorator.WithParameter(
-                                (p, c) => p.ParameterType == scopedInterfaceType,
-                                (p, c) => c.ResolveNamed(scopedName, scopedInterfaceType));
+                            var decoratorNames = new List<string>();
 
-                            decorator = ConfigureRegistration(decorator, scopedInterfaceType);
+                            foreach (var registrationName in _registrationNames[scopedInterfaceType]) { // loop over each implementation name that can be decorated
+                                var decorator = RegisterType(builder, kvp.Key);
+                                var scopedName = registrationName;
+
+                                // configure the decorator to accept the implementation that was registered with the name found in this list
+                                decorator.WithParameter(
+                                    (p, c) => p.ParameterType == scopedInterfaceType,
+                                    (p, c) => c.ResolveNamed(scopedName, scopedInterfaceType));
+
+
+                                // give the decorator a unique name
+                                var decoratorName = string.Format("{0}-{1}", registrationName, decorator.ActivatorData.ImplementationType.FullName);
+
+                                decorator = decorator.Named(decoratorName, interfaceType);
+                                decorator = decorator.As(interfaceType);//.AsSelf();
+
+                                if (typeof(ISingletonDependency).IsAssignableFrom(interfaceType)) {
+                                    decorator = decorator.InstancePerMatchingLifetimeScope("shell");
+                                }
+                                else if (typeof(IUnitOfWorkDependency).IsAssignableFrom(interfaceType)) {
+                                    decorator = decorator.InstancePerMatchingLifetimeScope("work");
+                                }
+                                else if (typeof(ITransientDependency).IsAssignableFrom(interfaceType)) {
+                                    decorator = decorator.InstancePerDependency();
+                                }
+
+                                decoratorNames.Add(decoratorName);
+                            }
+
+                            // update the collection of implmentation names that can be decorated to contain only the decorators (this allows us to stack decorators)
+                            _registrationNames[scopedInterfaceType] = decoratorNames;
                         }
                     }
 
@@ -177,13 +203,19 @@ namespace Orchard.Environment.ShellBuilders {
                 .WithMetadata("Feature", item.Feature);
         }
 
-        private IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> ConfigureRegistration(IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> registration, Type interfaceType)
-        {
-            var registrationName = Guid.NewGuid().ToString();
-            _registrationNames[interfaceType] = registrationName;
+        private IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> ConfigureRegistration(IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> registration, Type interfaceType) {
+            var registrationName = registration.ActivatorData.ImplementationType.FullName;
+
+            if (_registrationNames.ContainsKey(interfaceType) && _registrationNames[interfaceType] != null && !_registrationNames[interfaceType].Contains(registrationName)) {
+                _registrationNames[interfaceType].Add(registrationName);
+            }
+            else {
+                _registrationNames[interfaceType] = new List<string> { registrationName };
+            }
+
 
             registration = registration.Named(registrationName, interfaceType);
-            registration = registration.As(interfaceType).AsSelf();
+            registration = registration.As(interfaceType);//.AsSelf();
 
             if (typeof(ISingletonDependency).IsAssignableFrom(interfaceType)) {
                 registration = registration.InstancePerMatchingLifetimeScope("shell");
