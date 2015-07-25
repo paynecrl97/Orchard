@@ -206,11 +206,14 @@ namespace Orchard.Environment.ShellBuilders {
         private IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> ConfigureRegistration(IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> registration, Type interfaceType) {
             var registrationName = registration.ActivatorData.ImplementationType.FullName;
 
-            if (_registrationNames.ContainsKey(interfaceType) && _registrationNames[interfaceType] != null && !_registrationNames[interfaceType].Contains(registrationName)) {
+            if (_registrationNames.ContainsKey(interfaceType) 
+                    && _registrationNames[interfaceType] != null 
+                    && !_registrationNames[interfaceType].Contains(registrationName)) {
                 _registrationNames[interfaceType].Add(registrationName);
             }
             else {
-                _registrationNames[interfaceType] = new List<string> { registrationName };
+                _registrationNames[interfaceType] = new List<string>(); 
+                _registrationNames[interfaceType].Add(registrationName);
             }
 
 
