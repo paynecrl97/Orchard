@@ -102,6 +102,10 @@
       <Project>{7528BF74-25C7-4ABE-883A-443B4EEC4776}</Project>
       <Name>Orchard.Caching</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Orchard.Tokens\Orchard.Tokens.csproj">
+      <Project>{6f759635-13d7-4e94-bcc9-80445d63f117}</Project>
+      <Name>Orchard.Tokens</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orchard.Users\Orchard.Users.csproj">
       <Project>{79AED36E-ABD0-4747-93D3-8722B042454B}</Project>
       <Name>Orchard.Users</Name>
@@ -112,6 +116,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlternateImplementation\GlimpseTokenProviderDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseLayerEvaluationService.cs" />
     <Compile Include="SQL\GlimpseSessionConfigurationEvents.cs" />
     <Compile Include="SQL\GlimpseConnectionProvider.cs" />
@@ -126,6 +131,9 @@
     <Compile Include="Extensions\TimespanExtensions.cs" />
     <Compile Include="Models\IDurationMessage.cs" />
     <Compile Include="Extensions\TabSectionExtensions.cs" />
+    <Compile Include="Tabs\Tokens\TokenMessage.cs" />
+    <Compile Include="Tabs\Tokens\TokenMessagesConverter.cs" />
+    <Compile Include="Tabs\Tokens\TokenTab.cs" />
     <Compile Include="Tabs\Layers\LayerMessage.cs" />
     <Compile Include="Tabs\Layers\LayerMessagesConverter.cs" />
     <Compile Include="Tabs\Layers\LayerTab.cs" />

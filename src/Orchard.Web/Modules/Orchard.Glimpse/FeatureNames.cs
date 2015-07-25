@@ -7,6 +7,7 @@
         internal const string Layers = "Orchard.Glimpse.Layers";
         internal const string Shapes = "Orchard.Glimpse.Shapes";
         internal const string SQL = "Orchard.Glimpse.SQL";
+        internal const string Tokens = "Orchard.Glimpse.Tokens";
         internal const string Widgets = "Orchard.Glimpse.Widgets";
     }
 }

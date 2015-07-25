@@ -10,6 +10,7 @@ namespace Orchard.Glimpse
         public static TimelineCategoryItem Widgets { get { return new TimelineCategoryItem("Widgets", "#9e4058", "#9e4058"); } }
         public static TimelineCategoryItem Shapes { get { return new TimelineCategoryItem("Shapes", "#bcbb27", "#bcbb27"); } }
         public static TimelineCategoryItem Authorizer { get { return new TimelineCategoryItem("Authorizer", "#da7520", "#da7520"); } }
+        public static TimelineCategoryItem Tokens { get { return new TimelineCategoryItem("Tokens", "#84DCC6", "#84DCC6"); } }
 
     }
 }
