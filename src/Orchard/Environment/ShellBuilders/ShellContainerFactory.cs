@@ -183,7 +183,7 @@ namespace Orchard.Environment.ShellBuilders {
             _registrationNames[interfaceType] = registrationName;
 
             registration = registration.Named(registrationName, interfaceType);
-            registration = registration.As(interfaceType);
+            registration = registration.As(interfaceType).AsSelf();
 
             if (typeof(ISingletonDependency).IsAssignableFrom(interfaceType)) {
                 registration = registration.InstancePerMatchingLifetimeScope("shell");
