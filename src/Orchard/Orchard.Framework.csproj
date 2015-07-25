@@ -151,6 +151,7 @@
   <ItemGroup>
     <Compile Include="Environment\Extensions\Helpers\ExtensionManagerExtensions.cs" />
     <Compile Include="Mvc\Updater.cs" />
+    <Compile Include="OrchardDecoratorAttribute.cs" />
     <Compile Include="Recipes\Models\ConfigurationContext.cs" />
     <Compile Include="Recipes\Models\RecipeBuilderStepConfigurationContext.cs" />
     <Compile Include="Recipes\Models\RecipeExecutionStepConfigurationContext.cs" />
