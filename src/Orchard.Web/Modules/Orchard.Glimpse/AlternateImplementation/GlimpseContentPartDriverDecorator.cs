@@ -22,8 +22,7 @@ namespace Orchard.Glimpse.AlternateImplementation
         public DriverResult BuildDisplay(BuildDisplayContext context) {
             _glimpseService.PublishTimedAction(() => _decoratedService.BuildDisplay(context), (r, t) => {
                     string stereotype;
-                    if (!context.ContentItem.TypeDefinition.Settings.TryGetValue("Stereotype", out stereotype))
-                    {
+                    if (!context.ContentItem.TypeDefinition.Settings.TryGetValue("Stereotype", out stereotype)) {
                         stereotype = "Content";
                     }
 

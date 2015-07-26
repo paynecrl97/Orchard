@@ -116,7 +116,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlternateImplementation\Class1.cs" />
+    <Compile Include="AlternateImplementation\GlimpseContentPartDriverDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseTokenProviderDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseLayerEvaluationService.cs" />
     <Compile Include="SQL\GlimpseSessionConfigurationEvents.cs" />
