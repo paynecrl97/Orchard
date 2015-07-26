@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.MetaData;
+using Orchard.Environment.Extensions;
 using Orchard.Glimpse.Services;
 using Orchard.Glimpse.Tabs.PartDrivers;
 
 namespace Orchard.Glimpse.AlternateImplementation
 {
     [OrchardDecorator]
-    public class GlimpseContentPartDriverDecorator : IContentPartDriver
-    {
+    [OrchardFeature(FeatureNames.Parts)]
+    public class GlimpseContentPartDriverDecorator : IContentPartDriver {
         private readonly IContentPartDriver _decoratedService;
         private readonly IGlimpseService _glimpseService;
 
@@ -20,7 +20,7 @@ namespace Orchard.Glimpse.AlternateImplementation
         }
 
         public DriverResult BuildDisplay(BuildDisplayContext context) {
-            _glimpseService.PublishTimedAction(() => _decoratedService.BuildDisplay(context), (r, t) => {
+            var result = _glimpseService.PublishTimedAction(() => _decoratedService.BuildDisplay(context), (r, t) => {
                     string stereotype;
                     if (!context.ContentItem.TypeDefinition.Settings.TryGetValue("Stereotype", out stereotype)) {
                         stereotype = "Content";
@@ -34,8 +34,7 @@ namespace Orchard.Glimpse.AlternateImplementation
                 },
                 TimelineCategories.Layers, "Build Display");
 
-            Trace.WriteLine("Driver Build Display ");
-            return _decoratedService.BuildDisplay(context);
+            return result.ActionResult;
         }
 
         public DriverResult BuildEditor(BuildEditorContext context) {

@@ -26,11 +26,21 @@ Features:
         Description: Adds Glimpse instrumentation to your current Content Manager.
 		Category: Glimpse
 		Dependencies: Orchard.Glimpse
+    Orchard.Glimpse.Fields:
+		Name: Glimpse for Orchard Content Fields
+        Description: Adds Glimpse instrumentation to the Build Display method of your Content Fields.
+		Category: Glimpse
+		Dependencies: Orchard.Glimpse
     Orchard.Glimpse.Layers:
 		Name: Glimpse for Orchard Layers
         Description: Adds Glimpse instrumentation to your current Layer Rule evalution.
 		Category: Glimpse
 		Dependencies: Orchard.Glimpse, Orchard.Widgets
+    Orchard.Glimpse.Parts:
+		Name: Glimpse for Orchard Content Parts
+        Description: Adds Glimpse instrumentation to the Build Display method of your Content Parts.
+		Category: Glimpse
+		Dependencies: Orchard.Glimpse
     Orchard.Glimpse.Shapes:
 		Name: Glimpse for Orchard Shapes
         Description: Adds Glimpse instrumentation to your Shapes.
