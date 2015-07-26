@@ -116,6 +116,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlternateImplementation\GlimpseContentFieldDriverDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseContentPartDriverDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseTokenProviderDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseLayerEvaluationService.cs" />
@@ -132,6 +133,9 @@
     <Compile Include="Extensions\TimespanExtensions.cs" />
     <Compile Include="Models\IDurationMessage.cs" />
     <Compile Include="Extensions\TabSectionExtensions.cs" />
+    <Compile Include="Tabs\FieldDrivers\FieldDriverMessage.cs" />
+    <Compile Include="Tabs\FieldDrivers\FieldDriverMessagesConverter.cs" />
+    <Compile Include="Tabs\FieldDrivers\FieldDriversTab.cs" />
     <Compile Include="Tabs\PartDrivers\PartDriverMessage.cs" />
     <Compile Include="Tabs\PartDrivers\PartDriverMessagesConverter.cs" />
     <Compile Include="Tabs\PartDrivers\PartDriversTab.cs" />
