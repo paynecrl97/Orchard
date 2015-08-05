@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using Autofac;
 using Orchard.Caching.Services;
 using Orchard.Mvc.Filters;
 
