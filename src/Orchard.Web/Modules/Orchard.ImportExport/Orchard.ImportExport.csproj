@@ -87,6 +87,8 @@
     <Compile Include="Providers\ExportActions\BuildRecipeAction.cs" />
     <Compile Include="Models\ExportActionConfigurationContext.cs" />
     <Compile Include="Models\ImportActionConfigurationContext.cs" />
+    <Compile Include="Services\DatabaseManager.cs" />
+    <Compile Include="Services\IDatabaseManager.cs" />
     <Compile Include="ViewModels\RecipeExecutionStepViewModel.cs" />
     <Compile Include="Services\ISetupService.cs" />
     <Compile Include="Models\SetupContext.cs" />
@@ -155,9 +157,7 @@
   <ItemGroup>
     <Content Include="Views\Admin\Export.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Admin\ImportResult.cshtml" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Views\EditorTemplates\ImportActions\ExecuteRecipe.cshtml" />
   </ItemGroup>

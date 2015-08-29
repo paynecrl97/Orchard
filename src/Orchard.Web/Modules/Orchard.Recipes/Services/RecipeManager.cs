@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using log4net;
 using Orchard.Data;
 using Orchard.Logging;
 using Orchard.Recipes.Events;
@@ -26,8 +27,7 @@ namespace Orchard.Recipes.Services {
 
         public string Execute(Recipe recipe) {
             if (recipe == null) {
-                Logger.Information("Cannot execute a null recipe. No work has been scheduled.");
-                return null;
+                throw new ArgumentNullException("recipe");
             }
 
             if (!recipe.RecipeSteps.Any()) {
@@ -36,19 +36,28 @@ namespace Orchard.Recipes.Services {
             }
 
             var executionId = Guid.NewGuid().ToString("n");
-            Logger.Information("Executing recipe '{0}' using ExecutionId {1}.", recipe.Name, executionId);
-            _recipeExecuteEventHandler.ExecutionStart(executionId, recipe);
+            ThreadContext.Properties["ExecutionId"] = executionId;
 
-            foreach (var recipeStep in recipe.RecipeSteps) {
-                _recipeStepQueue.Enqueue(executionId, recipeStep);
-                _recipeStepResultRecordRepository.Create(new RecipeStepResultRecord() {
-                    ExecutionId = executionId,
-                    StepName = recipeStep.Name
-                });
+            try {
+                Logger.Information("Executing recipe '{0}'.", recipe.Name);
+                _recipeExecuteEventHandler.ExecutionStart(executionId, recipe);
+
+                foreach (var recipeStep in recipe.RecipeSteps) {
+                    _recipeStepQueue.Enqueue(executionId, recipeStep);
+                    _recipeStepResultRecordRepository.Create(new RecipeStepResultRecord {
+                        ExecutionId = executionId,
+                        RecipeName = recipe.Name,
+                        StepId = recipeStep.Id,
+                        StepName = recipeStep.Name
+                    });
+                }
+                _recipeScheduler.ScheduleWork(executionId);
+
+                return executionId;
             }
-            _recipeScheduler.ScheduleWork(executionId);
-
-            return executionId;
+            finally {
+                ThreadContext.Properties["ExecutionId"] = null;
+            }
         }
     }
 }
