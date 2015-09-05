@@ -167,8 +167,6 @@ namespace Orchard.Environment {
             //MvcServiceLocator.SetCurrent(hostContainer);
             OrchardHostContainerRegistry.RegisterHostContainer(hostContainer);
 
-            DependencyResolver.SetResolver(hostContainer);
-
             // Register localized data annotations
             ModelValidatorProviders.Providers.Clear();
             ModelValidatorProviders.Providers.Add(new LocalizedModelValidatorProvider());
