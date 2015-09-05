@@ -128,8 +128,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlternateImplementation\GlimpseContentFieldDriverDecorator.cs" />
-    <Compile Include="AlternateImplementation\GlimpseContentPartDriverDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseLayerEvaluationService.cs" />
     <Compile Include="GlimpseExtensions\ServiceLocators\OrchardGlimpseServiceLocator.cs" />
     <Compile Include="SQL\GlimpseSessionConfigurationEvents.cs" />
@@ -145,12 +143,6 @@
     <Compile Include="Extensions\TimespanExtensions.cs" />
     <Compile Include="Models\IDurationMessage.cs" />
     <Compile Include="Extensions\TabSectionExtensions.cs" />
-    <Compile Include="Tabs\FieldDrivers\FieldDriverMessage.cs" />
-    <Compile Include="Tabs\FieldDrivers\FieldDriverMessagesConverter.cs" />
-    <Compile Include="Tabs\FieldDrivers\FieldDriversTab.cs" />
-    <Compile Include="Tabs\PartDrivers\PartDriverMessage.cs" />
-    <Compile Include="Tabs\PartDrivers\PartDriverMessagesConverter.cs" />
-    <Compile Include="Tabs\PartDrivers\PartDriversTab.cs" />
     <Compile Include="Tabs\Layers\LayerMessage.cs" />
     <Compile Include="Tabs\Layers\LayerMessagesConverter.cs" />
     <Compile Include="Tabs\Layers\LayerTab.cs" />
