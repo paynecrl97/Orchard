@@ -130,7 +130,6 @@
   <ItemGroup>
     <Compile Include="AlternateImplementation\GlimpseContentFieldDriverDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseContentPartDriverDecorator.cs" />
-    <Compile Include="AlternateImplementation\GlimpseTokenProviderDecorator.cs" />
     <Compile Include="AlternateImplementation\GlimpseLayerEvaluationService.cs" />
     <Compile Include="GlimpseExtensions\ServiceLocators\OrchardGlimpseServiceLocator.cs" />
     <Compile Include="SQL\GlimpseSessionConfigurationEvents.cs" />
@@ -152,16 +151,12 @@
     <Compile Include="Tabs\PartDrivers\PartDriverMessage.cs" />
     <Compile Include="Tabs\PartDrivers\PartDriverMessagesConverter.cs" />
     <Compile Include="Tabs\PartDrivers\PartDriversTab.cs" />
-    <Compile Include="Tabs\Tokens\TokenMessage.cs" />
-    <Compile Include="Tabs\Tokens\TokenMessagesConverter.cs" />
-    <Compile Include="Tabs\Tokens\TokenTab.cs" />
     <Compile Include="Tabs\Layers\LayerMessage.cs" />
     <Compile Include="Tabs\Layers\LayerMessagesConverter.cs" />
     <Compile Include="Tabs\Layers\LayerTab.cs" />
     <Compile Include="Tabs\Widgets\WidgetTab.cs" />
     <Compile Include="Tabs\Widgets\WidgetMessage.cs" />
     <Compile Include="Tabs\Widgets\WidgetMessagesConverter.cs" />
-    <Compile Include="Tabs\DiTestTab.cs" />
     <Compile Include="Tabs\Shapes\ShapesMessage.cs" />
     <Compile Include="Tabs\Shapes\ShapesMessagesConverter.cs" />
     <Compile Include="Tabs\Shapes\ShapesTab.cs" />

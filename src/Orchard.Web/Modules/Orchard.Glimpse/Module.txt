@@ -51,11 +51,6 @@ Features:
         Description: Adds Glimpse instrumentation to your database calls.
 		Category: Diagnostics
 		Dependencies: Orchard.Glimpse
-    Orchard.Glimpse.Tokens:
-		Name: Glimpse for Tokens
-        Description: Adds Glimpse instrumentation to Token evaluation.
-		Category: Diagnostics
-		Dependencies: Orchard.Glimpse, Orchard.Tokens
     Orchard.Glimpse.Widgets:
 		Name: Glimpse for Orchard Widgets
         Description: Adds Glimpse instrumentation to your Widgets.
