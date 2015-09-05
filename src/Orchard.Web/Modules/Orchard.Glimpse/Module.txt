@@ -10,54 +10,54 @@ Features:
     Orchard.Glimpse:
 		Name: Glimpse for Orchard
         Description: Brings Orchard specific tabs to the Glimpse panel.
-		Category: Glimpse
+		Category: Diagnostics
     Orchard.Glimpse.Authorizer:
 		Name: Glimpse for Orchard Authorizer
         Description: Adds Glimpse instrumentation to your Authorizer service.
-		Category: Glimpse
+		Category: Diagnostics
 		Dependencies: Orchard.Glimpse
     Orchard.Glimpse.Cache:
 		Name: Glimpse for Orchard Cache Service
         Description: Adds Glimpse instrumentation to your current Cache Service.
-		Category: Glimpse
+		Category: Diagnostics
 		Dependencies: Orchard.Glimpse, Orchard.Caching
     Orchard.Glimpse.ContentManager:
 		Name: Glimpse for Orchard Content Manager
         Description: Adds Glimpse instrumentation to your current Content Manager.
-		Category: Glimpse
+		Category: Diagnostics
 		Dependencies: Orchard.Glimpse
     Orchard.Glimpse.Fields:
 		Name: Glimpse for Orchard Content Fields
         Description: Adds Glimpse instrumentation to the Build Display method of your Content Fields.
-		Category: Glimpse
+		Category: Diagnostics
 		Dependencies: Orchard.Glimpse
     Orchard.Glimpse.Layers:
 		Name: Glimpse for Orchard Layers
         Description: Adds Glimpse instrumentation to your current Layer Rule evalution.
-		Category: Glimpse
+		Category: Diagnostics
 		Dependencies: Orchard.Glimpse, Orchard.Widgets
     Orchard.Glimpse.Parts:
 		Name: Glimpse for Orchard Content Parts
         Description: Adds Glimpse instrumentation to the Build Display method of your Content Parts.
-		Category: Glimpse
+		Category: Diagnostics
 		Dependencies: Orchard.Glimpse
     Orchard.Glimpse.Shapes:
 		Name: Glimpse for Orchard Shapes
         Description: Adds Glimpse instrumentation to your Shapes.
-		Category: Glimpse
+		Category: Diagnostics
 		Dependencies: Orchard.Glimpse
     Orchard.Glimpse.SQL:
 		Name: Glimpse for Orchard SQL
         Description: Adds Glimpse instrumentation to your database calls.
-		Category: Glimpse
+		Category: Diagnostics
 		Dependencies: Orchard.Glimpse
     Orchard.Glimpse.Tokens:
 		Name: Glimpse for Tokens
         Description: Adds Glimpse instrumentation to Token evaluation.
-		Category: Glimpse
+		Category: Diagnostics
 		Dependencies: Orchard.Glimpse, Orchard.Tokens
     Orchard.Glimpse.Widgets:
 		Name: Glimpse for Orchard Widgets
         Description: Adds Glimpse instrumentation to your Widgets.
-		Category: Glimpse
+		Category: Diagnostics
 		Dependencies: Orchard.Glimpse, Orchard.Widgets

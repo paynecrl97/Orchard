@@ -24,6 +24,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,6 +76,10 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\aspnetwebapi\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Mvc, Version=5.2.3, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\aspnetmvc\System.Web.Mvc.dll</HintPath>
@@ -153,6 +158,7 @@
     <Compile Include="Tabs\Layers\LayerMessage.cs" />
     <Compile Include="Tabs\Layers\LayerMessagesConverter.cs" />
     <Compile Include="Tabs\Layers\LayerTab.cs" />
+    <Compile Include="Tabs\Widgets\WidgetTab.cs" />
     <Compile Include="Tabs\Widgets\WidgetMessage.cs" />
     <Compile Include="Tabs\Widgets\WidgetMessagesConverter.cs" />
     <Compile Include="Tabs\DiTestTab.cs" />
@@ -176,8 +182,6 @@
     <Compile Include="TimelineCategories.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Autofac\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Views\" />
   </ItemGroup>
   <PropertyGroup>

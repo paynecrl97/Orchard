@@ -38,8 +38,6 @@ using Orchard.WebApi.Filters;
 
 namespace Orchard.Environment {
     public static class OrchardStarter {
-        public static IContainer Container { get; private set; }
-
         public static IContainer CreateHostContainer(Action<ContainerBuilder> registrations) {
             var builder = new ContainerBuilder();
             builder.RegisterModule(new CollectionOrderModule());
@@ -169,11 +167,11 @@ namespace Orchard.Environment {
             //MvcServiceLocator.SetCurrent(hostContainer);
             OrchardHostContainerRegistry.RegisterHostContainer(hostContainer);
 
+            DependencyResolver.SetResolver(hostContainer);
+
             // Register localized data annotations
             ModelValidatorProviders.Providers.Clear();
             ModelValidatorProviders.Providers.Add(new LocalizedModelValidatorProvider());
-
-            Container = container;
 
             return container;
         }

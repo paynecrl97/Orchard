@@ -10,10 +10,8 @@ using ILogger = Orchard.Logging.ILogger;
 using NullLogger = Orchard.Logging.NullLogger;
 
 namespace Orchard.Glimpse.Services {
-    public class DefaultGlimpseService : IGlimpseService
-    {
-        public DefaultGlimpseService()
-        {
+    public class DefaultGlimpseService : IGlimpseService {
+        public DefaultGlimpseService() {
             Logger = NullLogger.Instance;
             T = NullLocalizer.Instance;
         }
@@ -21,8 +19,7 @@ namespace Orchard.Glimpse.Services {
         public ILogger Logger { get; set; }
         public Localizer T { get; private set; }
 
-        public TimerResult Time(Action action)
-        {
+        public TimerResult Time(Action action) {
             var executionTimer = GetTimer();
 
             if (executionTimer == null) {

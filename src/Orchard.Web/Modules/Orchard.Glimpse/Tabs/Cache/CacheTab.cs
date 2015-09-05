@@ -15,7 +15,7 @@ namespace Orchard.Glimpse.Tabs.Cache {
         }
 
         public override string Name {
-            get { return "Cache"; }
+            get { return "Cache Service"; }
         }
 
         public void Setup(ITabSetupContext context) {
