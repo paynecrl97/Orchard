@@ -165,7 +165,6 @@
     <Compile Include="Services\IGlimpseService.cs" />
     <Compile Include="Models\TimedActionResult.cs" />
     <Compile Include="Tabs\Cache\CacheMessagesConverter.cs" />
-    <Compile Include="Tests\TestFilter.cs" />
     <Compile Include="TimelineCategories.cs" />
   </ItemGroup>
   <ItemGroup>
