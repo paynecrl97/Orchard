@@ -4,8 +4,10 @@ using NHibernate.Driver;
 
 namespace Orchard.Glimpse.SQL {
     public class GlimpseConnectionProvider : DriverConnectionProvider, IConnectionProvider {
-        public new IDriver Driver {
-            get {
+        public new IDriver Driver
+        {
+            get
+            {
                 var originalDriver = base.Driver;
 
                 if (HttpContext.Current == null || originalDriver is GlimpseDriver) {

@@ -14,7 +14,8 @@ namespace Orchard.Glimpse.Tabs.Shapes {
             return messages;
         }
 
-        public override string Name {
+        public override string Name
+        {
             get { return "Shapes"; }
         }
 
@@ -22,10 +23,14 @@ namespace Orchard.Glimpse.Tabs.Shapes {
             context.PersistMessages<ShapeMessage>();
         }
 
-        public string Key {
+        public string Key
+        {
             get { return "glimpse_orchard_shapes"; }
         }
 
-        public bool KeysHeadings { get { return false; } }
+        public bool KeysHeadings
+        {
+            get { return false; }
+        }
     }
 }

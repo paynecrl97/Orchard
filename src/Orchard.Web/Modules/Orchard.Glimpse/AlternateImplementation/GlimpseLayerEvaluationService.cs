@@ -18,7 +18,7 @@ namespace Orchard.Glimpse.AlternateImplementation {
         private readonly IRuleManager _ruleManager;
         private readonly IOrchardServices _orchardServices;
 
-        private readonly LazyField<int[]> _activeLayerIDs; 
+        private readonly LazyField<int[]> _activeLayerIDs;
 
         public GlimpseLayerEvaluationService(IGlimpseService glimpseService, IRuleManager ruleManager, IOrchardServices orchardServices) {
             _glimpseService = glimpseService;
@@ -55,7 +55,6 @@ namespace Orchard.Glimpse.AlternateImplementation {
             foreach (var activeLayer in activeLayers) {
                 // ignore the rule if it fails to execute
                 try {
-
                     var currentLayer = activeLayer;
                     var layerRuleMatches = _glimpseService.PublishTimedAction(() => _ruleManager.Matches(currentLayer.Record.LayerRule), (r, t) => new LayerMessage {
                         Active = r,

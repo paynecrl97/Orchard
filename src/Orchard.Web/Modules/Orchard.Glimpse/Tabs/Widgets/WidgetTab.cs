@@ -2,16 +2,12 @@
 using Glimpse.Core.Extensions;
 using System.Linq;
 
-namespace Orchard.Glimpse.Tabs.Widgets
-{
+namespace Orchard.Glimpse.Tabs.Widgets {
     public class WidgetTab : TabBase, ITabSetup, IKey {
-
-        public override object GetData(ITabContext context)
-        {
+        public override object GetData(ITabContext context) {
             var messages = context.GetMessages<WidgetMessage>().ToList();
 
-            if (!messages.Any())
-            {
+            if (!messages.Any()) {
                 return "There have been no Widget events recorded. If you think there should have been, check that the 'Glimpse for Orchard Widgets' feature is enabled.";
             }
 
@@ -23,8 +19,7 @@ namespace Orchard.Glimpse.Tabs.Widgets
             get { return "Widgets"; }
         }
 
-        public void Setup(ITabSetupContext context)
-        {
+        public void Setup(ITabSetupContext context) {
             context.PersistMessages<WidgetMessage>();
         }
 

@@ -14,7 +14,8 @@ namespace Orchard.Glimpse.Tabs.ContentManager {
             return messages;
         }
 
-        public override string Name {
+        public override string Name
+        {
             get { return "Content Manager"; }
         }
 
@@ -22,10 +23,14 @@ namespace Orchard.Glimpse.Tabs.ContentManager {
             context.PersistMessages<ContentManagerGetMessage>();
         }
 
-        public string Key {
+        public string Key
+        {
             get { return "glimpse_orchard_contentmanager"; }
         }
 
-        public bool KeysHeadings { get { return false; } }
+        public bool KeysHeadings
+        {
+            get { return false; }
+        }
     }
 }

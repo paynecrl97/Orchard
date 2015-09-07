@@ -8,8 +8,7 @@ using Orchard.Glimpse.Tabs.Widgets;
 using Orchard.Indexing;
 using Orchard.Widgets.Models;
 
-namespace Orchard.Glimpse.AlternateImplementation
-{
+namespace Orchard.Glimpse.AlternateImplementation {
     [OrchardDecorator]
     [OrchardFeature(FeatureNames.Widgets)]
     public class GlimpseWidgetContentManagerDecorator : IContentManager {
@@ -140,9 +139,11 @@ namespace Orchard.Glimpse.AlternateImplementation
         public dynamic BuildDisplay(IContent content, string displayType = "", string groupId = "") {
             var widgetPart = content.As<WidgetPart>();
 
-            if (widgetPart == null) { return _decoratedService.BuildDisplay(content, displayType, groupId); }
+            if (widgetPart == null) {
+                return _decoratedService.BuildDisplay(content, displayType, groupId);
+            }
 
-            return _glimpseService.PublishTimedAction(() => _decoratedService.BuildDisplay(content, displayType, groupId), 
+            return _glimpseService.PublishTimedAction(() => _decoratedService.BuildDisplay(content, displayType, groupId),
                 (r, t) => new WidgetMessage {
                     Title = widgetPart.Title,
                     Type = widgetPart.ContentItem.ContentType,

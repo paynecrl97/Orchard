@@ -8,8 +8,7 @@ using Orchard.Glimpse.Services;
 using Orchard.Glimpse.Tabs.ContentManager;
 using Orchard.Indexing;
 
-namespace Orchard.Glimpse.AlternateImplementation
-{
+namespace Orchard.Glimpse.AlternateImplementation {
     [OrchardDecorator]
     [OrchardFeature(FeatureNames.ContentManager)]
     public class GlimpseContentManagerDecorator : IContentManager {
@@ -45,8 +44,7 @@ namespace Orchard.Glimpse.AlternateImplementation
             return _decoratedService.Restore(contentItem, options);
         }
 
-        public ContentItem Get(int id)
-        {
+        public ContentItem Get(int id) {
             return _glimpseService.PublishTimedAction(() => _decoratedService.Get(id), (r, t) => new ContentManagerGetMessage {
                 ContentId = id,
                 ContentType = GetContentType(id, r),
