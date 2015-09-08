@@ -14,8 +14,7 @@ namespace Orchard.Glimpse.Tabs.Authorizer {
             return messages;
         }
 
-        public override string Name
-        {
+        public override string Name {
             get { return "Authorizer"; }
         }
 
@@ -23,13 +22,11 @@ namespace Orchard.Glimpse.Tabs.Authorizer {
             context.PersistMessages<AuthorizerMessage>();
         }
 
-        public string Key
-        {
+        public string Key {
             get { return "glimpse_orchard_authorizer"; }
         }
 
-        public bool KeysHeadings
-        {
+        public bool KeysHeadings {
             get { return false; }
         }
     }

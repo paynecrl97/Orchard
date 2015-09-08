@@ -18,8 +18,7 @@ namespace Glimpse.Orchard.Glimpse.SecurityPolicies {
             return whitelistedIpAddresses.Contains(request.UserHostAddress) ? RuntimePolicy.On : RuntimePolicy.Off;
         }
 
-        public RuntimeEvent ExecuteOn
-        {
+        public RuntimeEvent ExecuteOn {
             get { return RuntimeEvent.EndRequest | RuntimeEvent.ExecuteResource; }
         }
     }

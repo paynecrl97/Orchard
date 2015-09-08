@@ -14,8 +14,7 @@ namespace Orchard.Glimpse.Tabs.Layers {
             return messages;
         }
 
-        public override string Name
-        {
+        public override string Name {
             get { return "Layers"; }
         }
 
@@ -23,8 +22,7 @@ namespace Orchard.Glimpse.Tabs.Layers {
             context.PersistMessages<LayerMessage>();
         }
 
-        public string Key
-        {
+        public string Key {
             get { return "glimpse_orchard_layers"; }
         }
     }

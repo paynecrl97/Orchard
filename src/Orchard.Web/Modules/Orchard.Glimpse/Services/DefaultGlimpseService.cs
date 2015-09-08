@@ -113,7 +113,6 @@ namespace Orchard.Glimpse.Services {
         }
 
         private IExecutionTimer GetTimer() {
-            //todo: make this more robust and  make public
             var context = HttpContext.Current;
             if (context == null) {
                 return null;
@@ -122,8 +121,7 @@ namespace Orchard.Glimpse.Services {
             return ((GlimpseRuntime) context.Application.Get("__GlimpseRuntime")).Configuration.TimerStrategy.Invoke();
         }
 
-        private IMessageBroker GetMessageBroker() //todo: make this more robust and  make public
-        {
+        private IMessageBroker GetMessageBroker() {
             var context = HttpContext.Current;
             if (context == null) {
                 return null;

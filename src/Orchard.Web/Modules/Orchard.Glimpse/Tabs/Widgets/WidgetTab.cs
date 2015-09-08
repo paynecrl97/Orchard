@@ -14,8 +14,7 @@ namespace Orchard.Glimpse.Tabs.Widgets {
             return messages;
         }
 
-        public override string Name
-        {
+        public override string Name {
             get { return "Widgets"; }
         }
 
@@ -23,8 +22,7 @@ namespace Orchard.Glimpse.Tabs.Widgets {
             context.PersistMessages<WidgetMessage>();
         }
 
-        public string Key
-        {
+        public string Key {
             get { return "glimpse_orchard_widgets"; }
         }
     }

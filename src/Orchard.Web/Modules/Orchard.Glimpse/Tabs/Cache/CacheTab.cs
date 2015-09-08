@@ -14,8 +14,7 @@ namespace Orchard.Glimpse.Tabs.Cache {
             return messages;
         }
 
-        public override string Name
-        {
+        public override string Name {
             get { return "Cache Service"; }
         }
 
@@ -23,13 +22,11 @@ namespace Orchard.Glimpse.Tabs.Cache {
             context.PersistMessages<CacheMessage>();
         }
 
-        public string Key
-        {
+        public string Key {
             get { return "glimpse_orchard_cache"; }
         }
 
-        public bool KeysHeadings
-        {
+        public bool KeysHeadings {
             get { return false; }
         }
     }

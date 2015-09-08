@@ -51,13 +51,11 @@ namespace Orchard.Glimpse.SQL {
             _decoratedService.AdjustCommand(command);
         }
 
-        public bool SupportsMultipleOpenReaders
-        {
+        public bool SupportsMultipleOpenReaders {
             get { return _decoratedService.SupportsMultipleOpenReaders; }
         }
 
-        public bool SupportsMultipleQueries
-        {
+        public bool SupportsMultipleQueries {
             get { return _decoratedService.SupportsMultipleQueries; }
         }
     }
