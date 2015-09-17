@@ -14,7 +14,8 @@ namespace Orchard.Glimpse.Tabs.Cache {
                     .Column(message.Key)
                     .Column(message.Result)
                     .Column(message.Value)
-                    .Column(message.Duration.ToTimingString());
+                    .Column(message.Duration.ToTimingString())
+                    .QuietIf(message.Result == "Miss");
             }
 
             root.AddTimingSummary(messages);

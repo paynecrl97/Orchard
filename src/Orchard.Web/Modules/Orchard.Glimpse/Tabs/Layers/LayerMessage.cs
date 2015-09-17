@@ -7,6 +7,7 @@ namespace Orchard.Glimpse.Tabs.Layers {
         public string Name { get; set; }
         public string Rule { get; set; }
         public bool Active { get; set; }
+        public string EditUrl { get; set; }
         public TimeSpan Duration { get; set; }
     }
 }

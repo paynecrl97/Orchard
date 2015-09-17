@@ -129,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlternateImplementation\GlimpseLayerEvaluationService.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="GlimpseExtensions\WhitelistedIpAddressesSecurityPolicy.cs" />
     <Compile Include="SQL\GlimpseSessionConfigurationEvents.cs" />
     <Compile Include="SQL\GlimpseConnectionProvider.cs" />

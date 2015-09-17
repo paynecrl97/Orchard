@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Web.Compilation;
+using System.Web.Mvc;
 using System.Xml.Linq;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData.Models;
@@ -6,7 +9,9 @@ using Orchard.Environment.Extensions;
 using Orchard.Glimpse.Services;
 using Orchard.Glimpse.Tabs.Widgets;
 using Orchard.Indexing;
+using Orchard.Mvc.Html;
 using Orchard.Widgets.Models;
+using System.Web;
 
 namespace Orchard.Glimpse.AlternateImplementation {
     [OrchardDecorator]
@@ -14,10 +19,12 @@ namespace Orchard.Glimpse.AlternateImplementation {
     public class GlimpseWidgetContentManagerDecorator : IContentManager {
         private readonly IContentManager _decoratedService;
         private readonly IGlimpseService _glimpseService;
+        private readonly UrlHelper _urlHelper;
 
-        public GlimpseWidgetContentManagerDecorator(IContentManager decoratedService, IGlimpseService glimpseService) {
+        public GlimpseWidgetContentManagerDecorator(IContentManager decoratedService, IGlimpseService glimpseService, UrlHelper urlHelper) {
             _decoratedService = decoratedService;
             _glimpseService = glimpseService;
+            _urlHelper = urlHelper;
         }
 
         public IEnumerable<ContentTypeDefinition> GetContentTypeDefinitions() {
@@ -145,12 +152,14 @@ namespace Orchard.Glimpse.AlternateImplementation {
 
             return _glimpseService.PublishTimedAction(() => _decoratedService.BuildDisplay(content, displayType, groupId),
                 (r, t) => new WidgetMessage {
+                    ContentId = content.Id,
                     Title = widgetPart.Title,
                     Type = widgetPart.ContentItem.ContentType,
                     Zone = widgetPart.Zone,
                     Layer = widgetPart.LayerPart,
                     Position = widgetPart.Position,
                     TechnicalName = widgetPart.Name,
+                    EditUrl = AppendReturnUrl(_urlHelper.ItemAdminUrl(content)),
                     Duration = t.Duration
                 }, TimelineCategories.Widgets, string.Format("Build Display: {0}", widgetPart.ContentItem.ContentType), widgetPart.Title).ActionResult;
         }
@@ -161,6 +170,18 @@ namespace Orchard.Glimpse.AlternateImplementation {
 
         public dynamic UpdateEditor(IContent content, IUpdateModel updater, string groupId = "") {
             return _decoratedService.UpdateEditor(content, updater, groupId);
+        }
+
+        private string AppendReturnUrl(string path) {
+            var uriBuilder = new UriBuilder(_urlHelper.RequestContext.HttpContext.Request.Url.AbsoluteUri);
+            uriBuilder.Path = path;
+            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+
+            query["returnUrl"] = _urlHelper.RequestContext.HttpContext.Request.Url.AbsolutePath;
+            uriBuilder.Query = query.ToString();
+            path = uriBuilder.ToString();
+            
+            return path;
         }
     }
 }
