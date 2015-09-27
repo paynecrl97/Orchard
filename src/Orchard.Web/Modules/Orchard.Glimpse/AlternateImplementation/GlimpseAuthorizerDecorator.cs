@@ -7,9 +7,9 @@ using Orchard.Security;
 using Orchard.Security.Permissions;
 
 namespace Orchard.Glimpse.AlternateImplementation {
-    [OrchardDecorator]
+    //[OrchardDecorator]
     [OrchardFeature(FeatureNames.Authorizer)]
-    public class GlimpseAuthorizerDecorator : IAuthorizer {
+    public class GlimpseAuthorizerDecorator : IDecorator<IAuthorizer>, IAuthorizer {
         private readonly IAuthorizer _decoratedService;
         private readonly IGlimpseService _glimpseService;
 

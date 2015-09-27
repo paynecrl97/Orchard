@@ -27,6 +27,10 @@ namespace Orchard {
     public interface ITransientDependency : IDependency {
     }
 
+    public interface IDecorator<T> where T : IDependency {
+        
+    }
+
 
     public abstract class Component : IDependency {
         protected Component() {

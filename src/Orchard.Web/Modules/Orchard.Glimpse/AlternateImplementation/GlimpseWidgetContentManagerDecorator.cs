@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web.Compilation;
 using System.Web.Mvc;
 using System.Xml.Linq;
 using Orchard.ContentManagement;
@@ -14,9 +13,9 @@ using Orchard.Widgets.Models;
 using System.Web;
 
 namespace Orchard.Glimpse.AlternateImplementation {
-    [OrchardDecorator]
+    //[OrchardDecorator]
     [OrchardFeature(FeatureNames.Widgets)]
-    public class GlimpseWidgetContentManagerDecorator : IContentManager {
+    public class GlimpseWidgetContentManagerDecorator : IDecorator<IContentManager>, IContentManager {
         private readonly IContentManager _decoratedService;
         private readonly IGlimpseService _glimpseService;
         private readonly UrlHelper _urlHelper;

@@ -24,7 +24,7 @@ namespace Orchard.Glimpse.Services {
 
             if (executionTimer == null) {
                 action();
-                return null;
+                return new TimerResult();
             }
 
             return executionTimer.Time(action);
@@ -36,7 +36,7 @@ namespace Orchard.Glimpse.Services {
             var executionTimer = GetTimer();
 
             if (executionTimer == null) {
-                return new TimedActionResult<T> {ActionResult = action()};
+                return new TimedActionResult<T> {ActionResult = action() };
             }
 
             var duration = executionTimer.Time(() => { result = action(); });
@@ -124,10 +124,20 @@ namespace Orchard.Glimpse.Services {
         private IMessageBroker GetMessageBroker() {
             var context = HttpContext.Current;
             if (context == null) {
-                return null;
+                return new NullMessageBroker();
             }
 
             return ((GlimpseRuntime) context.Application.Get("__GlimpseRuntime")).Configuration.MessageBroker;
         }
+    }
+
+    public class NullMessageBroker : IMessageBroker {
+        public void Publish<T>(T message) { }
+
+        public Guid Subscribe<T>(Action<T> action) {
+            return Guid.NewGuid();
+        }
+
+        public void Unsubscribe<T>(Guid subscriptionId) { }
     }
 }
