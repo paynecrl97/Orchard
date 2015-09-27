@@ -137,7 +137,8 @@ namespace Orchard.Environment.ShellBuilders {
                                 registration = registration.InstancePerDependency();
                             }
 
-                            if (itemToBeRegistered.DecoratedTypes == null || !itemToBeRegistered.DecoratedTypes.Contains(interfaceType)) {// only enter here if there are no decorating types too
+                            if ((itemToBeRegistered.DecoratedTypes == null || !itemToBeRegistered.DecoratedTypes.Contains(interfaceType))
+                                && (itemToBeRegistered.DecoratingTypes == null || !itemToBeRegistered.DecoratingTypes.Contains(interfaceType))) {// only enter here if there are no decorating types too
                                 // only register As() if this interface type is not registered by another item
                                 registration = registration.As(interfaceType);
                             }
@@ -179,7 +180,7 @@ namespace Orchard.Environment.ShellBuilders {
                                     // give the decorator a unique name
                                     var decoratorName = string.Format("{0}-{1}", namedRegistration, decoratorRegistration.ActivatorData.ImplementationType.FullName);
                                     decoratorRegistration = decoratorRegistration.Named(decoratorName, interfaceType);
-
+                                    
                                     // register the decorator as an implementation
                                     decoratorRegistration = decoratorRegistration.As(interfaceType);
 
