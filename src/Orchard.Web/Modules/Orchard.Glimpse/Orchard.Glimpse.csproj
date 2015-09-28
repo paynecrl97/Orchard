@@ -131,6 +131,9 @@
     <Compile Include="AlternateImplementation\Class1.cs" />
     <Compile Include="AlternateImplementation\GlimpseLayerEvaluationService.cs" />
     <Compile Include="DayOfTheWeekLayerRuleProvider.cs" />
+    <Compile Include="Tabs\Parts\PartMessage.cs" />
+    <Compile Include="Tabs\Parts\PartMessagesConverter.cs" />
+    <Compile Include="Tabs\Parts\PartTab.cs" />
     <Compile Include="TestFilter.cs" />
     <Compile Include="GlimpseExtensions\WhitelistedIpAddressesSecurityPolicy.cs" />
     <Compile Include="SQL\GlimpseSessionConfigurationEvents.cs" />

@@ -12,7 +12,7 @@ namespace Orchard.Glimpse.Tests
     {
         private readonly ICacheService _cacheService;
 
-        public TestFilter(ICacheService cacheService, IEnumerable<IEnumerableTest> decorators, IEnumerable<IContentManager> contentManagers)
+        public TestFilter(ICacheService cacheService)
         {
             _cacheService = cacheService;
         }
@@ -43,22 +43,5 @@ namespace Orchard.Glimpse.Tests
         public string Name { get; set; }
         public DateTime DateOfBirth { get; set; }
         public int NumberOfOrchardHarvestTalksGiven { get; set; }
-    }
-
-    public interface IEnumerableTest : IDependency { }
-
-    public class EnumerableTest1 : IEnumerableTest {
-    }
-
-    public class EnumerableTest2 : IEnumerableTest { }
-    public class EnumerableTest3 : IEnumerableTest { }
-    public class EnumerableDecorator : IDecorator<IEnumerableTest>, IEnumerableTest
-    {
-        private readonly IEnumerableTest _decoratedService;
-
-        public EnumerableDecorator(IEnumerableTest decoratedService)
-        {
-            _decoratedService = decoratedService;
-        }
     }
 }

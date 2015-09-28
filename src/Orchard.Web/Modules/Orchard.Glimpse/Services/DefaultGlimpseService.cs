@@ -68,14 +68,17 @@ namespace Orchard.Glimpse.Services {
             return timedResult;
         }
 
-        public TimedActionResult<T> PublishTimedAction<T>(Func<T> action, TimelineCategoryItem category, string eventName, string eventSubText = null) {
+        public TimedActionResult<T> PublishTimedAction<T>(Func<T> action, TimelineCategoryItem category, string eventName, string eventSubText = null, Func<T, bool> publishCondition = null) {
             var timedResult = Time(action);
-            PublishMessage(new TimelineMessage {EventName = eventName, EventCategory = category, EventSubText = eventSubText}.AsTimedMessage(timedResult.TimerResult));
+
+            if (publishCondition==null || publishCondition(timedResult.ActionResult)) {
+                PublishMessage(new TimelineMessage {EventName = eventName, EventCategory = category, EventSubText = eventSubText}.AsTimedMessage(timedResult.TimerResult));
+            }
 
             return timedResult;
         }
 
-        public TimedActionResult<T> PublishTimedAction<T>(Func<T> action, TimelineCategoryItem category, Func<T, string> eventNameFactory, Func<T, string> eventSubTextFactory = null) {
+        public TimedActionResult<T> PublishTimedAction<T>(Func<T> action, TimelineCategoryItem category, Func<T, string> eventNameFactory, Func<T, string> eventSubTextFactory = null, Func<T, bool> publishCondition = null) {
             var timedResult = Time(action);
 
             string eventSubText = null;
@@ -83,21 +86,29 @@ namespace Orchard.Glimpse.Services {
                 eventSubText = eventSubTextFactory(timedResult.ActionResult);
             }
 
-            PublishMessage(new TimelineMessage {EventName = eventNameFactory(timedResult.ActionResult), EventCategory = category, EventSubText = eventSubText}.AsTimedMessage(timedResult.TimerResult));
+            if (publishCondition == null || publishCondition(timedResult.ActionResult)) {
+                PublishMessage(new TimelineMessage {EventName = eventNameFactory(timedResult.ActionResult), EventCategory = category, EventSubText = eventSubText}.AsTimedMessage(timedResult.TimerResult));
+            }
 
             return timedResult;
         }
 
-        public TimedActionResult<T> PublishTimedAction<T, TMessage>(Func<T> action, Func<T, TimerResult, TMessage> messageFactory, TimelineCategoryItem category, string eventName, string eventSubText = null) {
+        public TimedActionResult<T> PublishTimedAction<T, TMessage>(Func<T> action, Func<T, TimerResult, TMessage> messageFactory, TimelineCategoryItem category, string eventName, string eventSubText = null, Func<T, bool> publishCondition = null) {
             var actionResult = PublishTimedAction(action, category, eventName, eventSubText);
-            PublishMessage(messageFactory(actionResult.ActionResult, actionResult.TimerResult));
+
+            if (publishCondition == null || publishCondition(actionResult.ActionResult)) {
+                PublishMessage(messageFactory(actionResult.ActionResult, actionResult.TimerResult));
+            }
 
             return actionResult;
         }
 
-        public TimedActionResult<T> PublishTimedAction<T, TMessage>(Func<T> action, Func<T, TimerResult, TMessage> messageFactory, TimelineCategoryItem category, Func<T, string> eventNameFactory, Func<T, string> eventSubTextFactory = null) {
+        public TimedActionResult<T> PublishTimedAction<T, TMessage>(Func<T> action, Func<T, TimerResult, TMessage> messageFactory, TimelineCategoryItem category, Func<T, string> eventNameFactory, Func<T, string> eventSubTextFactory = null, Func<T, bool> publishCondition = null) {
             var actionResult = PublishTimedAction(action, category, eventNameFactory, eventSubTextFactory);
-            PublishMessage(messageFactory(actionResult.ActionResult, actionResult.TimerResult));
+
+            if (publishCondition == null || publishCondition(actionResult.ActionResult)) {
+                PublishMessage(messageFactory(actionResult.ActionResult, actionResult.TimerResult));
+            }
 
             return actionResult;
         }

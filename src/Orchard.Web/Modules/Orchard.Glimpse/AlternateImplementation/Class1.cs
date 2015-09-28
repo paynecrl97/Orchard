@@ -2,19 +2,35 @@
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.MetaData;
+using Orchard.Glimpse.Extensions;
+using Orchard.Glimpse.Services;
+using Orchard.Glimpse.Tabs.Parts;
 
 namespace Orchard.Glimpse.AlternateImplementation
 {
     public class GlimpseContentPartDriver : IDecorator<IContentPartDriver>, IContentPartDriver
     {
         private readonly IContentPartDriver _decoratedService;
+        private readonly IGlimpseService _glimpseService;
 
-        public GlimpseContentPartDriver(IContentPartDriver decoratedService) {
+        public GlimpseContentPartDriver(IContentPartDriver decoratedService, IGlimpseService glimpseService) {
             _decoratedService = decoratedService;
+            _glimpseService = glimpseService;
         }
 
         public DriverResult BuildDisplay(BuildDisplayContext context) {
-            return _decoratedService.BuildDisplay(context);
+            var result =  _glimpseService.PublishTimedAction(() => _decoratedService.BuildDisplay(context), (r, t) => {
+                return new PartMessage {
+                    //ContentId = context.ContentItem.Id,
+                    //ContentName = context.ContentItem.GetContentName(),
+                    //ContentType = context.ContentItem.ContentType,
+                    //DisplayType = context.DisplayType,
+                    //PartDefinition = context.ContentPart == null ? null : context.ContentPart.PartDefinition
+                };
+            }, TimelineCategories.Widgets, "Build Display: "/* + context.ContentPart == null ? context.ContentItem.ContentType : context.ContentPart.PartDefinition.Name*/, context.ContentItem.GetContentName(), driverResult => driverResult != null).ActionResult;
+            //}, TimelineCategories.Widgets, "Build Display: " + context.ContentPart == null ? context.ContentItem.ContentType : context.ContentPart.PartDefinition.Name, context.ContentItem.GetContentName(), driverResult => driverResult != null).ActionResult;
+
+            return result; 
         }
 
         public DriverResult BuildEditor(BuildEditorContext context) {
