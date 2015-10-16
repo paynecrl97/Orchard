@@ -78,8 +78,10 @@ namespace Orchard.Environment.ShellBuilders {
                     var itemsToBeRegistered = new ConcurrentQueue<ItemToBeRegistered>();
 
                     foreach (var item in blueprint.Dependencies.Where(t => typeof(IDependency).IsAssignableFrom(t.Type))) {
+                        // Determine if this service is an IEventHandler
                         var isEventHandler = typeof (IEventHandler).IsAssignableFrom(item.Type);
 
+                        // Harvest any interfaces that this service decorates
                         var decoratingTypes = item.Type.GetInterfaces()
                             .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IDecorator<>))
                             .Select(t => t.GetGenericArguments().First());
@@ -134,7 +136,7 @@ namespace Orchard.Environment.ShellBuilders {
 
                             if (!itemToBeRegistered.IsDecorator(interfaceType)) {
                                 // This service is not a decorator for this interface type,
-                                // so should be added to the list of services that implement this interface type
+                                // so should be added to the list of services that implement this interface type so that it can be decorated should a decorator be discovered
                                 AddRegistrationName(registrationName, interfaceType);
                             }
                             else {
