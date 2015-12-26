@@ -28,7 +28,7 @@ namespace Orchard.Environment.ShellBuilders {
     public class ShellContainerFactory : IShellContainerFactory {
         private readonly ILifetimeScope _lifetimeScope;
         private readonly IShellContainerRegistrations _shellContainerRegistrations;
-        private ConcurrentDictionary<Type, ConcurrentBag<string>> _registrationNames;
+        private ConcurrentDictionary<Type, ConcurrentBag<NamedRegistration>> _concreteRegistrationNames;
 
         public ShellContainerFactory(ILifetimeScope lifetimeScope, IShellContainerRegistrations shellContainerRegistrations) {
             _lifetimeScope = lifetimeScope;
@@ -67,15 +67,15 @@ namespace Orchard.Environment.ShellBuilders {
                     builder.Register(ctx => blueprint.Descriptor);
                     builder.Register(ctx => blueprint);
 
-                    _registrationNames = new ConcurrentDictionary<Type, ConcurrentBag<string>>();
+                    _concreteRegistrationNames = new ConcurrentDictionary<Type, ConcurrentBag<NamedRegistration>>();
 
                     var moduleIndex = intermediateScope.Resolve<IIndex<Type, IModule>>();
                     foreach (var item in blueprint.Dependencies.Where(t => typeof(IModule).IsAssignableFrom(t.Type))) {
                         builder.RegisterModule(moduleIndex[item.Type]);
                     }
-
-                    var decorators = new ConcurrentQueue<KeyValuePair<DependencyBlueprint, string>>();
+                    
                     var itemsToBeRegistered = new ConcurrentQueue<ItemToBeRegistered>();
+                    var decorators = new ConcurrentQueue<DecoratorRegistration>();
 
                     foreach (var item in blueprint.Dependencies.Where(t => typeof(IDependency).IsAssignableFrom(t.Type))) {
                         // Determine if this service is an IEventHandler
@@ -117,81 +117,43 @@ namespace Orchard.Environment.ShellBuilders {
 
                     foreach (var itemToBeRegistered in itemsToBeRegistered) {
                         var registration = RegisterType(builder, itemToBeRegistered.Item)
+                            .AsSelf()
                             .EnableDynamicProxy(dynamicProxyContext)
                             .InstancePerLifetimeScope();
 
+                        var registrationName = registration.ActivatorData.ImplementationType.FullName;
+
+                        registration.Named(registrationName, itemToBeRegistered.Item.Type);
+
                         foreach (var interfaceType in itemToBeRegistered.InterfaceTypes) {
-                            var registrationName = registration.ActivatorData.ImplementationType.FullName;
 
-                            var interfaceName = interfaceType.FullName; //todo: remove this on tidyup
-
-                            registration = registration.Named(registrationName, interfaceType);
                             registration = SetRegistrationScope(interfaceType, registration);
+                            
+                            var itemIsDecorator = itemToBeRegistered.IsDecorator(interfaceType);
+                            var itemIsDecorated = itemToBeRegistered.IsDecorated(interfaceType);
 
-                            if (!itemToBeRegistered.IsDecorator(interfaceType) && !itemToBeRegistered.IsDecorated(interfaceType)) {
-                                // This service is neither a decorator nor is decorated.
-                                // It should be registered as an implementation if this interface type.
+                            if (!itemIsDecorated && !itemIsDecorator) {
+                                // This item is not decorated by another implementation of this interface type and is not a decorator.
+                                // It should be registered as the implementation of this interface. The ensures that Autofac will resolve only a single implementation should there be one or more decorators.
                                 registration = registration.As(interfaceType);
                             }
 
-                            if (!itemToBeRegistered.IsDecorator(interfaceType)) {
-                                // This service is not a decorator for this interface type,
-                                // so should be added to the list of services that implement this interface type so that it can be decorated should a decorator be discovered
-                                AddRegistrationName(registrationName, interfaceType);
+                            if (!itemIsDecorator) {
+                                // This item is not a decorator.
+                                // We need to add it to the list of concrete implementations. This allows us to know the names of the implementations that need to be decorated should a decorator for this interface exist.
+                                AddConcreteRegistrationName(registrationName, interfaceType, itemToBeRegistered.Item.Type);
                             }
-                            else {
-                                // This service is a decorator for this interface type
 
-                                // We need to ensure that there is an implentation of this service that can be decorated
-                                if (!_registrationNames.ContainsKey(interfaceType) || _registrationNames[interfaceType] == null || !_registrationNames[interfaceType].Any()) {
-                                    var exception = new OrchardFatalException(T("The only registered implementations of `{0}` are decorators. In order to avoid circular dependenices, there must be at least one implementation that is not marked with the `OrchardDecorator` attribute.", interfaceType.FullName));
-                                    Logger.Fatal(exception, "Could not complete dependency registration as a circular dependency chain has been found.");
-
-                                    throw exception;
-                                }
-
-                                var decoratorNames = new ConcurrentBag<string>();
-
-                                // For every implementation that can be decorated
-                                foreach (var namedRegistration in _registrationNames[interfaceType]) {
-
-                                    // Create a new registration
-                                    var decoratorRegistration = RegisterType(builder, itemToBeRegistered.Item)
-                                        .EnableDynamicProxy(dynamicProxyContext)
-                                        .InstancePerLifetimeScope();
-
-                                    // Create a unique name for the decorator
-                                    var decoratorName = string.Format("{0}-{1}", namedRegistration, decoratorRegistration.ActivatorData.ImplementationType.FullName);
-                                    decoratorRegistration = decoratorRegistration.Named(decoratorName, interfaceType);
-
-                                    // Specify the named implementation to be injected as the decorated service
-                                    decoratorRegistration = decoratorRegistration.WithParameter(
-                                        (p, c) => p.ParameterType == interfaceType,
-                                        (p, c) => c.ResolveNamed(namedRegistration, interfaceType));
-                                    
-                                    // Register the decorator as an implementation of this interface type
-                                    decoratorRegistration = decoratorRegistration.As(interfaceType);
-
-                                    // Set the scope of this implementation
-                                    decoratorRegistration = SetRegistrationScope(interfaceType, decoratorRegistration);
-
-                                    // Assign any custom parameters
-                                    foreach (var parameter in itemToBeRegistered.Item.Parameters) {
-                                        decoratorRegistration = decoratorRegistration
-                                            .WithParameter(parameter.Name, parameter.Value)
-                                            .WithProperty(parameter.Name, parameter.Value);
-                                    }
-
-                                    decoratorNames.Add(decoratorName);
-                                }
-
-                                // update the collection of implmentation names that can be decorated to contain only the decorators (this allows us to stack decorators)
-                                _registrationNames[interfaceType] = decoratorNames;
+                            if (itemIsDecorator) {
+                                // This item decorates the interface currently being registered.
+                                // It needs to be added to the list of decorators so that is can be registered once all of the concrete implementations have been registered.
+                                decorators.Enqueue(new DecoratorRegistration(interfaceType, itemToBeRegistered, itemIsDecorated));
                             }
                         }
 
                         if (itemToBeRegistered.IsEventHandler) {
-                            var interfaces = itemToBeRegistered.Item.Type.GetInterfaces();
+                            // var interfaces = itemToBeRegistered.Item.Type.GetInterfaces();
+                            var interfaces = itemToBeRegistered.InterfaceTypes;
                             foreach (var interfaceType in interfaces) {
 
                                 // register named instance for each interface, for efficient filtering inside event bus
@@ -207,6 +169,47 @@ namespace Orchard.Environment.ShellBuilders {
                                 .WithParameter(parameter.Name, parameter.Value)
                                 .WithProperty(parameter.Name, parameter.Value);
                         }
+                    }
+
+                    foreach (var decorator in decorators) {
+                        // We need to ensure that there is an implementation of this service that can be decorated
+                        if (!_concreteRegistrationNames.ContainsKey(decorator.InterfaceType) || _concreteRegistrationNames[decorator.InterfaceType] == null || !_concreteRegistrationNames[decorator.InterfaceType].Any()) {
+                            var exception = new OrchardFatalException(T("The only registered implementations of `{0}` are decorators. In order to avoid circular dependenices, there must be at least one implementation that is not marked with the `OrchardDecorator` attribute.", decorator.InterfaceType.FullName));
+                            Logger.Fatal(exception, "Could not complete dependency registration as a circular dependency chain has been found.");
+
+                            throw exception;
+                        }
+
+                        var decoratorNames = new ConcurrentBag<NamedRegistration>();
+
+                        // For every implementation that can be decorated
+                        foreach (var namedRegistration in _concreteRegistrationNames[decorator.InterfaceType]) {
+                            var registration = RegisterType(builder, decorator.ItemToBeRegistered.Item)
+                                .AsSelf()
+                                .EnableDynamicProxy(dynamicProxyContext)
+                                .InstancePerLifetimeScope();
+
+                            registration = SetRegistrationScope(decorator.InterfaceType, registration);
+
+                            // Create a unique name for the decorator
+                            var decoratorName = string.Format("{0}-{1}", namedRegistration.Name, decorator.ItemToBeRegistered.Item.Type.FullName);
+                            registration = registration.Named(decoratorName, decorator.ItemToBeRegistered.Item.Type);
+
+                            // Tell Autofac to resolve the decorated service with the implementation that has already been registered
+                            registration = registration.WithParameter(
+                                        (p, c) => p.ParameterType == decorator.InterfaceType,
+                                        (p, c) => c.ResolveNamed(namedRegistration.Name, namedRegistration.ImplementationType));
+
+                            if (!decorator.IsDecorated) {
+                                // This is the last decorator in the stack, so register it as the implmentation of the interface that it is decorating
+                                registration = registration.As(decorator.InterfaceType);
+                            }
+
+                            decoratorNames.Add(new NamedRegistration(decoratorName, decorator.ItemToBeRegistered.Item.Type));
+                        }
+
+                        // Update the collection of implmentation names that can be decorated to contain only the decorators (this allows us to stack decorators)
+                        _concreteRegistrationNames[decorator.InterfaceType] = decoratorNames;
                     }
 
                     foreach (var item in blueprint.Controllers) {
@@ -275,14 +278,14 @@ namespace Orchard.Environment.ShellBuilders {
             return decoratorRegistration;
         }
 
-        private void AddRegistrationName(string registrationName, Type interfaceType) {
-            if (_registrationNames.ContainsKey(interfaceType)
-                && _registrationNames[interfaceType] != null
-                && !_registrationNames[interfaceType].Contains(registrationName)) {
-                _registrationNames[interfaceType].Add(registrationName);
+        private void AddConcreteRegistrationName(string registrationName, Type interfaceType, Type implementationType) {
+            if (_concreteRegistrationNames.ContainsKey(interfaceType)
+                && _concreteRegistrationNames[interfaceType] != null
+                && !_concreteRegistrationNames[interfaceType].Any(nr=>nr.Name==registrationName)) {
+                _concreteRegistrationNames[interfaceType].Add(new NamedRegistration(registrationName, implementationType));
             }
             else {
-                _registrationNames[interfaceType] = new ConcurrentBag<string> {registrationName};
+                _concreteRegistrationNames[interfaceType] = new ConcurrentBag<NamedRegistration> {new NamedRegistration(registrationName, implementationType)};
             }
         }
         
@@ -305,6 +308,28 @@ namespace Orchard.Environment.ShellBuilders {
             public bool IsDecorator(Type interfaceType) {
                 return DecoratingTypes != null && DecoratingTypes.Contains(interfaceType);
             }
+        }
+
+        private class NamedRegistration {
+            public NamedRegistration(string name, Type implementationType) {
+                Name = name;
+                ImplementationType = implementationType;
+            }
+
+            public string Name { get; }
+            public Type ImplementationType { get; }
+        }
+
+        private class DecoratorRegistration {
+            public DecoratorRegistration(Type interfaceType, ItemToBeRegistered itemToBeRegistered, bool isDecorated) {
+                InterfaceType = interfaceType;
+                ItemToBeRegistered = itemToBeRegistered;
+                IsDecorated = isDecorated;
+            }
+
+            public Type InterfaceType { get; }
+            public ItemToBeRegistered ItemToBeRegistered { get; }
+            public bool IsDecorated { get; }
         }
     }
 }

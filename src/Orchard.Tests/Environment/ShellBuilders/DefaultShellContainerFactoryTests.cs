@@ -16,6 +16,7 @@ using Orchard.Environment.Extensions.Models;
 using Orchard.Environment.ShellBuilders;
 using Orchard.Environment.Descriptor.Models;
 using Orchard.Environment.ShellBuilders.Models;
+using System;
 
 namespace Orchard.Tests.Environment.ShellBuilders {
     [TestFixture]
@@ -384,6 +385,16 @@ namespace Orchard.Tests.Environment.ShellBuilders {
             public ITestDecorator DecoratedService { get { return _decoratedService; } }
         }
 
+        public class TestDecorator4 : IDecorator<ITestDecorator>, ITestDecorator {
+            private readonly ITestDecorator _decoratedService;
+
+            public TestDecorator4(ITestDecorator decoratedService) {
+                _decoratedService = decoratedService;
+            }
+
+            public ITestDecorator DecoratedService { get { return _decoratedService; } }
+        }
+
         [Test]
         public void DecoratedComponentsAreResolvedToTheDecorator() {
             var settings = CreateSettings();
@@ -478,7 +489,7 @@ namespace Orchard.Tests.Environment.ShellBuilders {
 
             var factory = _container.Resolve<IShellContainerFactory>();
             var shellContainer = factory.CreateContainer(settings, blueprint);
-
+            
             var services = shellContainer.Resolve<IEnumerable<ITestDecorator>>().ToArray();
 
             Assert.That(services, Is.Not.Null);
@@ -521,6 +532,22 @@ namespace Orchard.Tests.Environment.ShellBuilders {
             Assert.That(services[0].DecoratedService.DecoratedService.DecoratedService, Is.InstanceOf<TestDecoratorImpl1>());
             Assert.That(services[1].DecoratedService.DecoratedService.DecoratedService, Is.InstanceOf<TestDecoratorImpl2>());
             Assert.That(services[2].DecoratedService.DecoratedService.DecoratedService, Is.InstanceOf<TestDecoratorImpl3>());
+        }
+
+        [Test]
+        public void RegisteringDecoratorsWithoutConcreteThrowsFatalException() {
+            var settings = CreateSettings();
+            var blueprint = CreateBlueprint(
+                    WithDependency<TestDecorator1>(),
+                    WithDependency<TestDecorator2>(),
+                    WithDependency<TestDecorator3>()
+            );
+
+            var factory = _container.Resolve<IShellContainerFactory>();
+
+            Assert.Throws<OrchardFatalException>(delegate {
+                factory.CreateContainer(settings, blueprint);
+            });
         }
     }
 }
