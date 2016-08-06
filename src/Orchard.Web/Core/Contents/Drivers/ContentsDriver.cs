@@ -24,6 +24,9 @@ namespace Orchard.Core.Contents.Drivers {
             if (part.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable)
                 results.Add(ContentShape("Content_PublishButton", publishButton => publishButton));
 
+            if (part.TypeDefinition.Settings.GetModel<ContentTypeSettings>().LivePreviewable)
+                results.Add(ContentShape("Content_LivePreview", livePreview => livePreview));
+
             return Combined(results.ToArray());
         }
 

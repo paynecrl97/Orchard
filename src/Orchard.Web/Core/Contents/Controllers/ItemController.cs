@@ -77,5 +77,23 @@ namespace Orchard.Core.Contents.Controllers {
 
             return View(model);
         }
+
+        // /Contents/Item/LivePreview/72
+        public ActionResult LivePreview(int id) {
+            var versionOptions = VersionOptions.LivePreview;
+
+            var contentItem = _contentManager.Get(id, VersionOptions.LivePreview) ?? _contentManager.Get(id, VersionOptions.LivePreviewRequired);
+
+            if (contentItem == null)
+                return HttpNotFound();
+
+            if (!Services.Authorizer.Authorize(Permissions.PreviewContent, contentItem, T("Cannot preview content"))) {
+                return new HttpUnauthorizedResult();
+            }
+
+            var model = _contentManager.BuildDisplay(contentItem);
+
+            return View("Display", model);
+        }
     }
 }

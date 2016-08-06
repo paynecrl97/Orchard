@@ -4,10 +4,16 @@
     Display.LocalNavigation(Tabs: tabs);
 }
 <div class="edit-item">
-    <div class="edit-item-primary">
+    <div class="edit-item-primary @(Model.RightColumn != null ? "has-right-column" : null)">
         @if (Model.Content != null) {
             <div class="edit-item-content">
                 @Display(Model.Content)
+            </div>
+        }
+
+        @if (Model.RightColumn != null) {
+            <div class="edit-item-right-column">
+                @Display(Model.RightColumn)
             </div>
         }
     </div>

@@ -169,6 +169,16 @@ namespace Orchard.ContentManagement {
         public static VersionOptions DraftRequired { get { return new VersionOptions { IsDraft = true, IsDraftRequired = true }; } }
 
         /// <summary>
+        /// Gets the latest live preview version.
+        /// </summary>
+        public static VersionOptions LivePreview { get { return new VersionOptions { IsLivePreview = true }; } }
+
+        /// <summary>
+        /// Gets the latest version and creates a new live preview version based on it.
+        /// </summary>
+        public static VersionOptions LivePreviewRequired { get { return new VersionOptions { IsLivePreview = true, IsLivePreviewRequired = true }; } }
+
+        /// <summary>
         /// Gets all versions.
         /// </summary>
         public static VersionOptions AllVersions { get { return new VersionOptions { IsAllVersions = true }; } }
@@ -192,6 +202,8 @@ namespace Orchard.ContentManagement {
         public bool IsPublished { get; private set; }
         public bool IsDraft { get; private set; }
         public bool IsDraftRequired { get; private set; }
+        public bool IsLivePreview { get; private set; }
+        public bool IsLivePreviewRequired { get; private set; }
         public bool IsAllVersions { get; private set; }
         public int VersionNumber { get; private set; }
         public int VersionRecordId { get; private set; }

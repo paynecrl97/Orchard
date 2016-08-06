@@ -13,6 +13,7 @@ namespace Orchard.ContentManagement.Records {
 
         public virtual bool Published { get; set; }
         public virtual bool Latest { get; set; }
+        public virtual bool LivePreview { get; set; }
 
         [StringLengthMax]
         public virtual string Data { get { return Infoset.Data; } set { Infoset.Data = value; } }

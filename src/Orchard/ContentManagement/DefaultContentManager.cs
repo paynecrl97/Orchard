@@ -174,6 +174,12 @@ namespace Orchard.ContentManagement {
                         else if (options.IsLatest) {
                             contentItemVersionCriteria.Add(Restrictions.Eq("Latest", true));
                         }
+                        else if (options.IsLivePreview && !options.IsLivePreviewRequired) {
+                            contentItemVersionCriteria.Add(Restrictions.Eq("LivePreview", true));
+                        }
+                        else if (options.IsLivePreview && options.IsLivePreviewRequired) {
+                            contentItemVersionCriteria.Add(Restrictions.Eq("Latest", true));
+                        }
                         else if (options.IsDraft && !options.IsDraftRequired) {
                             contentItemVersionCriteria.Add(
                                 Restrictions.And(Restrictions.Eq("Published", false),
@@ -217,8 +223,8 @@ namespace Orchard.ContentManagement {
 
             // return item if obtained earlier in session
             if (session.RecallVersionRecordId(versionRecord.Id, out contentItem)) {
-                if (options.IsDraftRequired && versionRecord.Published) {
-                    return BuildNewVersion(contentItem);
+                if ((options.IsDraftRequired || options.IsLivePreviewRequired) && versionRecord.Published) {
+                    return BuildNewVersion(contentItem, options.IsLivePreviewRequired);
                 }
                 return contentItem;
             }
@@ -237,9 +243,9 @@ namespace Orchard.ContentManagement {
             Handlers.Invoke(handler => handler.Loading(context), Logger);
             Handlers.Invoke(handler => handler.Loaded(context), Logger);
 
-            // when draft is required and latest is published a new version is appended 
-            if (options.IsDraftRequired && versionRecord.Published) {
-                contentItem = BuildNewVersion(context.ContentItem);
+            // when draft or live preview is required and latest is published a new version is appended 
+            if ((options.IsDraftRequired || options.IsLivePreviewRequired) && versionRecord.Published) {
+                return BuildNewVersion(contentItem, options.IsLivePreviewRequired);
             }
 
             return contentItem;
@@ -252,7 +258,7 @@ namespace Orchard.ContentManagement {
                        _contentItemVersionRepository.Get(
                            x => x.ContentItemRecord == itemRecord && x.Published);
             }
-            if (options.IsLatest || options.IsDraftRequired) {
+            if (options.IsLatest || options.IsDraftRequired || options.IsLivePreview) {
                 return itemRecord.Versions.FirstOrDefault(
                     x => x.Latest) ??
                        _contentItemVersionRepository.Get(
@@ -264,12 +270,19 @@ namespace Orchard.ContentManagement {
                        _contentItemVersionRepository.Get(
                            x => x.ContentItemRecord == itemRecord && x.Latest && !x.Published);
             }
+            if (options.IsLivePreview) {
+                return itemRecord.Versions.FirstOrDefault(
+                    x => x.LivePreview) ??
+                       _contentItemVersionRepository.Get(
+                           x => x.ContentItemRecord == itemRecord && x.LivePreview);
+            }
             if (options.VersionNumber != 0) {
                 return itemRecord.Versions.FirstOrDefault(
                     x => x.Number == options.VersionNumber) ??
                        _contentItemVersionRepository.Get(
                            x => x.ContentItemRecord == itemRecord && x.Number == options.VersionNumber);
             }
+
             return null;
         }
 
@@ -464,15 +477,16 @@ namespace Orchard.ContentManagement {
             Handlers.Invoke(handler => handler.Destroyed(context), Logger);
         }
 
-        protected virtual ContentItem BuildNewVersion(ContentItem existingContentItem) {
+        protected virtual ContentItem BuildNewVersion(ContentItem existingContentItem, bool isLivePreview) {
             var contentItemRecord = existingContentItem.Record;
 
             // locate the existing and the current latest versions, allocate building version
             var existingItemVersionRecord = existingContentItem.VersionRecord;
             var buildingItemVersionRecord = new ContentItemVersionRecord {
                 ContentItemRecord = contentItemRecord,
-                Latest = true,
+                Latest = !isLivePreview, // todo: is it correct to assume that latest is always the opposite of is live preview? (this was previously hc to 'true')
                 Published = false,
+                LivePreview = isLivePreview,
                 Data = existingItemVersionRecord.Data,
             };
 
@@ -592,7 +606,7 @@ namespace Orchard.ContentManagement {
                 : Get(contentItem.Id, options);
 
             // Create a new version record based on the specified version record.
-            var rolledBackContentItem = BuildNewVersion(specifiedVersionContentItem);
+            var rolledBackContentItem = BuildNewVersion(specifiedVersionContentItem, options.IsLivePreview);
             rolledBackContentItem.VersionRecord.Published = options.IsPublished;
 
             // Invoke handlers.

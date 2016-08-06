@@ -11,8 +11,12 @@ namespace Orchard.Core.Contents.Extensions {
             return builder.WithSetting("ContentTypeSettings.Listable", listable.ToString());
         }
 
-        public static ContentTypeDefinitionBuilder Draftable(this ContentTypeDefinitionBuilder builder, bool draftable = true) {
+        public static ContentTypeDefinitionBuilder Draftable(this ContentTypeDefinitionBuilder builder, bool draftable = true)         {
             return builder.WithSetting("ContentTypeSettings.Draftable", draftable.ToString());
+        }
+
+        public static ContentTypeDefinitionBuilder LivePreviewable(this ContentTypeDefinitionBuilder builder, bool livePreviewable = true) {
+            return builder.WithSetting("ContentTypeSettings.LivePreviewable", livePreviewable.ToString());
         }
 
         public static ContentTypeDefinitionBuilder Securable(this ContentTypeDefinitionBuilder builder, bool securable = true) {

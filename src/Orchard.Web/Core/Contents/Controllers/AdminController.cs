@@ -382,6 +382,23 @@ namespace Orchard.Core.Contents.Controllers {
             return this.RedirectLocal(returnUrl, () => RedirectToAction("Edit", new RouteValueDictionary { { "Id", contentItem.Id } }));
         }
 
+        [HttpPost, ActionName("Edit")]
+        [Mvc.FormValueRequired("submit.LivePreview")]
+        public ActionResult LivePreviewPOST(int id) {
+            var contentItem = _contentManager.Get(id, VersionOptions.LivePreview) ?? _contentManager.Get(id, VersionOptions.LivePreviewRequired);
+
+            if (!Services.Authorizer.Authorize(Permissions.EditContent, contentItem, T("Couldn't edit content")))
+                return new HttpUnauthorizedResult();
+
+            var model = _contentManager.UpdateEditor(contentItem, this);
+            if (!ModelState.IsValid) {
+                _transactionManager.Cancel();
+                return View("Edit", model);
+            }
+
+            return View("Edit", model);
+        }
+
         [HttpPost]
         public ActionResult Clone(int id) {
             var originalContentItem = _contentManager.GetLatest(id);

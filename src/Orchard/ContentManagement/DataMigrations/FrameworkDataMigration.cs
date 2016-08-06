@@ -75,5 +75,14 @@ namespace Orchard.ContentManagement.DataMigrations {
 
             return 4;
         }
+
+        public int UpdateFrom5() {
+            SchemaBuilder.AlterTable("ContentItemVersionRecord",
+               table => table
+                   .AddColumn<bool>("LivePreview")
+               );
+
+            return 6;
+        }
     }
 }

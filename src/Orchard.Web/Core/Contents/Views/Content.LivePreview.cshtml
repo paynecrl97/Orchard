@@ -1,0 +1,65 @@
+﻿@using Orchard.ContentManagement
+
+@{ 
+    Script.Require("jQuery");
+
+    using (Script.Foot())
+    {
+        <script type="text/javascript">
+            var isResizing = false;
+
+            $(function () {
+                $("a#live-preview-toggle").on("click", function (event) {
+                    $("html").toggleClass("live-preview-enabled");
+
+                    event.stopPropagation();
+                });
+
+                $("input").on("keyup", function () {
+                    if (!$("html").hasClass("live-preview-enabled")) {
+                        return;
+                    }
+                    
+                    var form = $("form");
+                    form.append($('<input type="hidden" name="submit.LivePreview" value="submit.LivePreview" />'));
+
+                    var data = form.serialize();
+
+                    $.post(form.attr("action"), data, function () {
+                        $("#live-preview-frame")[0].contentDocument.location.reload(true);
+                    });
+
+                });
+
+                var container = $('.edit-item'),
+                    leftCol = $('.edit-item-content'),
+                    rightCol = $('.edit-item-right-column'),
+                    handle = $('<div class="resize-handle" />');
+
+                rightCol.append(handle);
+
+                handle.on('mousedown', function (e) {
+                    isResizing = true;
+                });
+
+                $(document).on('mousemove', function (e) {
+                    // we don't want to do anything if we aren't resizing.
+                    if (!isResizing)
+                        return;
+
+                    var offsetRight = container.width() - (e.clientX - container.offset().left);
+
+                    leftCol.css('margin-right', offsetRight + 24);
+                    rightCol.css('width', offsetRight);
+                }).on('mouseup', function (e) {
+                    // stop resizing
+                    isResizing = false;
+                });
+            });
+        </script>
+    }
+}
+
+<a href="#" id="live-preview-toggle">@T("Toggle Live Preview")</a>
+
+<iframe id="live-preview-frame" src="@Url.Action("LivePreview", "Item", new { Model.ContentPart.Id, area = "Contents" })"> </iframe>

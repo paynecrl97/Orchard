@@ -1130,6 +1130,32 @@ html.dyn #submit-pager, html.dyn .apply-bulk-actions-auto { display:none; }
 }
 /* Core Contents and Orchard.PublishLater */
 
+/*.edit-item-primary.has-right-column .edit-item-content {
+    width:80%;
+    float:left
+}
+
+.edit-item-primary.has-right-column .edit-item-right-column {
+    width:20%;
+    float:left;
+    padding-left:24px;
+}*/
+
+.edit-item {
+    position:relative; /* This is required because of the relative obsolute position of the child right column*/
+}
+
+.edit-item-primary.has-right-column .edit-item-content {
+    margin-right:224px;
+}
+
+.edit-item-primary.has-right-column .edit-item-right-column {
+    position:absolute;
+    top:0;
+    right:0;
+    width:200px;
+}
+
 .edit-item-sidebar fieldset {
     margin:0;
     padding:0;
@@ -1149,6 +1175,51 @@ fieldset.publish-button {
 }
 fieldset.delete-button {
     margin: 0 0 0 12px;
+}
+
+/* Live Preview */
+
+.resize-handle {
+    position: absolute;
+    left: -16px;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    cursor: w-resize;
+    background:red;
+}
+
+#live-preview-frame {
+    display:none;
+    width:100%;
+    height:600px;
+    margin-top:16px;
+}
+
+.live-preview-enabled #content {
+    position:absolute;
+    top:0;
+    left:0;
+    margin:20px;
+    z-index:999;
+    box-shadow: 0 0 70px #000000;
+}
+
+.live-preview-enabled #live-preview-frame {
+    display:block;
+    width:100%;
+    height:600px;
+}
+
+.live-preview-enabled .edit-item-primary.has-right-column .edit-item-content {
+    margin-right:624px;
+}
+
+.live-preview-enabled .edit-item-primary.has-right-column .edit-item-right-column {
+    position:fixed;
+    top:36px;
+    right:36px;
+    width:600px;
 }
 
 /* Dashboard */
