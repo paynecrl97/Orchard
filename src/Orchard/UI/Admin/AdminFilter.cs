@@ -38,12 +38,14 @@ namespace Orchard.UI.Admin {
         }
 
         private static bool IsAdmin(AuthorizationContext filterContext) {
-            if (IsNameAdmin(filterContext) || IsNameAdminProxy(filterContext)) {
-                return true;
+            var adminAttributes = GetAdminAttributes(filterContext.ActionDescriptor);
+
+            if (adminAttributes != null && adminAttributes.Any()) {
+                // If there are any AdminAttributes on the controller or action, they must all be enabled in order for IsAdmin to be true. If a single attribute is not enabled, then IsAdmin is false.
+                return adminAttributes.All(attribute => attribute.Enabled);
             }
 
-            var adminAttributes = GetAdminAttributes(filterContext.ActionDescriptor);
-            if (adminAttributes != null && adminAttributes.Any()) {
+            if (IsNameAdmin(filterContext) || IsNameAdminProxy(filterContext)) {
                 return true;
             }
             return false;

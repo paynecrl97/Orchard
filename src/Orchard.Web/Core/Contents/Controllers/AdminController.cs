@@ -23,6 +23,8 @@ using Orchard.UI.Notify;
 using Orchard.Settings;
 using Orchard.Utility.Extensions;
 using Orchard.Localization.Services;
+using Orchard.Themes;
+using Orchard.UI.Admin;
 
 namespace Orchard.Core.Contents.Controllers {
     [ValidateInput(false)]
@@ -382,21 +384,31 @@ namespace Orchard.Core.Contents.Controllers {
             return this.RedirectLocal(returnUrl, () => RedirectToAction("Edit", new RouteValueDictionary { { "Id", contentItem.Id } }));
         }
 
-        [HttpPost, ActionName("Edit")]
-        [Mvc.FormValueRequired("submit.LivePreview")]
-        public ActionResult LivePreviewPOST(int id) {
-            var contentItem = _contentManager.Get(id, VersionOptions.LivePreview) ?? _contentManager.Get(id, VersionOptions.LivePreviewRequired);
+        [HttpPost]
+        [Themed, Admin(false)]
+        public ActionResult LivePreview(string contentType) {
+            // Create a new content item
+            var contentItem = _contentManager.New(contentType);   
 
-            if (!Services.Authorizer.Authorize(Permissions.EditContent, contentItem, T("Couldn't edit content")))
+            // Update it to use the values posted to this action
+            _contentManager.UpdateEditor(contentItem, this);
+
+            // Render
+            return View("LivePreview", _contentManager.BuildDisplay(contentItem));
+        }
+
+        [HttpPost]
+        public ActionResult CreateAccessToken(int id, int version, string returnUrl) {
+            var contentItem = _contentManager.Get(id, VersionOptions.Number(version));
+
+            if (!Services.Authorizer.Authorize(Permissions.CreatePreviewAccessToken, contentItem, T("You don't have the correct permissions to create preview access tokens")))
                 return new HttpUnauthorizedResult();
 
-            var model = _contentManager.UpdateEditor(contentItem, this);
-            if (!ModelState.IsValid) {
-                _transactionManager.Cancel();
-                return View("Edit", model);
-            }
+            _contentManager.GenerateAccessToken(contentItem);
 
-            return View("Edit", model);
+            Services.Notifier.Success(T("Access Token created. The public preview URL is <a href=\"{0}\">{0}</a>", Url.ItemPreviewUrl(contentItem)));
+
+            return this.RedirectLocal(returnUrl, () => RedirectToAction("List"));
         }
 
         [HttpPost]

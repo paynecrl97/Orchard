@@ -57,6 +57,16 @@ namespace Orchard.Mvc.Html {
                 metadata.DisplayRouteValues);
         }
 
+        public static string ItemPreviewUrl(this UrlHelper urlHelper, IContent content) {
+            var metadata = content.ContentItem.ContentManager.GetItemMetadata(content);
+            if (metadata.PreviewRouteValues == null)
+                return null;
+
+            return urlHelper.Action(
+                Convert.ToString(metadata.PreviewRouteValues["action"]),
+                metadata.PreviewRouteValues);
+        }
+
         public static MvcHtmlString ItemRemoveLink(this HtmlHelper html, IContent content) {
             return ItemRemoveLink(html, null, content, null);
         }

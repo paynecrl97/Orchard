@@ -76,13 +76,13 @@ namespace Orchard.ContentManagement.DataMigrations {
             return 4;
         }
 
-        public int UpdateFrom5() {
+        public int UpdateFrom4() {
             SchemaBuilder.AlterTable("ContentItemVersionRecord",
                table => table
-                   .AddColumn<bool>("LivePreview")
+                   .AddColumn<string>("AccessToken")
                );
 
-            return 6;
+            return 5;
         }
     }
 }

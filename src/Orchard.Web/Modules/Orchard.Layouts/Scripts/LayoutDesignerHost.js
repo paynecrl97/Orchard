@@ -100,6 +100,8 @@
 
             layoutDataField.val(layoutDataDataJson);
             recycleBinDataField.val(recycleBinDataJson);
+
+            $("body").trigger("contentchanged");
         };
 
         this.element.on("change", ".template-picker select", function (e) {

@@ -28,6 +28,19 @@ namespace Orchard.Core.Contents.Handlers {
                     {"Id", context.ContentItem.Id}
                 };
             }
+            if (context.Metadata.PreviewRouteValues == null) {
+                context.Metadata.PreviewRouteValues = new RouteValueDictionary {
+                    {"Area", "Contents"},
+                    {"Controller", "Item"},
+                    {"Action", "Preview"},
+                    {"Id", context.ContentItem.Id},
+                    {"Version", context.ContentItem.VersionRecord.Number}
+                };
+
+                if (!string.IsNullOrEmpty(context.ContentItem.VersionRecord.AccessToken)) { 
+                    context.Metadata.PreviewRouteValues.Add("AccessToken", context.ContentItem.VersionRecord.AccessToken);
+                }
+            }
             if (context.Metadata.RemoveRouteValues == null) {
                 context.Metadata.RemoveRouteValues = new RouteValueDictionary {
                     {"Area", "Contents"},

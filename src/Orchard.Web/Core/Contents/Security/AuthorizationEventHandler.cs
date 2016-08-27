@@ -60,6 +60,8 @@ namespace Orchard.Core.Contents.Security {
                 return Permissions.ViewOwnContent;
             if (permission.Name == Permissions.PreviewContent.Name)
                 return Permissions.PreviewOwnContent;
+            if (permission.Name == Permissions.CreatePreviewAccessToken.Name)
+                return Permissions.CreatePreviewAccessTokenOwnContent;
 
             return null;
         }

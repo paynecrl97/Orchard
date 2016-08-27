@@ -1186,7 +1186,7 @@ fieldset.delete-button {
     bottom: 0;
     width: 8px;
     cursor: w-resize;
-    background:red;
+    background: #e4e5e6;
 }
 
 #live-preview-frame {
@@ -1194,6 +1194,14 @@ fieldset.delete-button {
     width:100%;
     height:600px;
     margin-top:16px;
+}
+
+.live-preview-enabled div.actions .show-on-live-preview, .hide-on-live-preview {
+    display:initial;
+}
+
+.live-preview-enabled .hide-on-live-preview, div.actions .show-on-live-preview {
+    display:none;
 }
 
 .live-preview-enabled #content {

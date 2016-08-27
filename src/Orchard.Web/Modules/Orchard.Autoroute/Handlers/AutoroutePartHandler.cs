@@ -79,6 +79,11 @@ namespace Orchard.Autoroute.Handlers {
         }
 
         private void ProcessAlias(AutoroutePart part) {
+            // If the part has not yet had an Id assigned (ie it is "new", but has not yet been "created"), then don't attempt to create an alias
+            if(part.Id == 0) {
+                return;
+            }
+
             // Generate an alias if one as not already been entered.
             if (String.IsNullOrWhiteSpace(part.DisplayAlias)) {
                 part.DisplayAlias = _autorouteService.Value.GenerateAlias(part);

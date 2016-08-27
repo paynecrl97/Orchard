@@ -24,7 +24,7 @@
     @if (Model.Settings.AllowCustomPattern) {
         <span class="permalink-definition" dir="ltr">
             <span>@Url.MakeAbsolute("/")@urlPrefix</span>
-            <span>@Html.TextBoxFor(m => m.CurrentUrl, new { @class = "text is-url" })</span>
+            <span>@Html.TextBoxFor(m => m.CurrentUrl, new { @class = "text is-url no-live-preview" })</span>
         </span>
         <span class="hint">@T("Save the current item and leave the input empty to have it automatically generated using the pattern {0} e.g., {1}.", pattern.ElementAtOrDefault(Convert.ToInt32(defaultPattern.PatternIndex)).Name, pattern.ElementAtOrDefault(Convert.ToInt32(defaultPattern.PatternIndex)).Description)</span>
     }

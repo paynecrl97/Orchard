@@ -22,14 +22,14 @@
 
     <ContentDefinition>
         <Types>
-            <Page ContentTypeSettings.Draftable="True" TypeIndexing.Indexes="Search">
+            <Page ContentTypeSettings.Draftable="True" ContentTypeSettings.LivePreviewable="True" TypeIndexing.Indexes="Search">
                 <TitlePart/>
                 <TagsPart />
                 <LocalizationPart />
                 <AutoroutePart />
                 <MenuPart />
             </Page>
-            <BlogPost ContentTypeSettings.Draftable="True" TypeIndexing.Indexes="Search">
+            <BlogPost ContentTypeSettings.Draftable="True" ContentTypeSettings.LivePreviewable="True" TypeIndexing.Indexes="Search">
                 <CommentsPart />
                 <TagsPart />
                 <LocalizationPart />

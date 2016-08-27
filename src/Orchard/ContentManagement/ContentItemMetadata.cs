@@ -12,6 +12,7 @@ namespace Orchard.ContentManagement {
         public string DisplayText { get; set; }
         public ContentIdentity Identity { get; set; }
         public RouteValueDictionary DisplayRouteValues { get; set; }
+        public RouteValueDictionary PreviewRouteValues { get; set; }
         public RouteValueDictionary EditorRouteValues { get; set; }
         public RouteValueDictionary CreateRouteValues { get; set; }
         public RouteValueDictionary RemoveRouteValues { get; set; }

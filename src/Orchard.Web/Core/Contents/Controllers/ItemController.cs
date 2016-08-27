@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using Orchard.ContentManagement;
 using Orchard.DisplayManagement;
 using Orchard.Localization;
@@ -32,7 +33,7 @@ namespace Orchard.Core.Contents.Controllers {
                 return HttpNotFound();
 
             if (version.HasValue)
-                return Preview(id, version);
+                return Preview(id, version, null);
 
             var contentItem = _contentManager.Get(id.Value, VersionOptions.Published);
 
@@ -53,7 +54,8 @@ namespace Orchard.Core.Contents.Controllers {
 
         // /Contents/Item/Preview/72
         // /Contents/Item/Preview/72?version=5
-        public ActionResult Preview(int? id, int? version) {
+        // /Contents/Item/Preview/72?version=5&accessToken=tokenxyz
+        public ActionResult Preview(int? id, int? version, string accessToken) {
             if (id == null)
                 return HttpNotFound();
 
@@ -66,7 +68,7 @@ namespace Orchard.Core.Contents.Controllers {
             if (contentItem == null)
                 return HttpNotFound();
 
-            if (!Services.Authorizer.Authorize(Permissions.PreviewContent, contentItem, T("Cannot preview content"))) {
+            if (!AuthorizeContentPreview(contentItem, accessToken)) {
                 return new HttpUnauthorizedResult();
             }
 
@@ -78,22 +80,12 @@ namespace Orchard.Core.Contents.Controllers {
             return View(model);
         }
 
-        // /Contents/Item/LivePreview/72
-        public ActionResult LivePreview(int id) {
-            var versionOptions = VersionOptions.LivePreview;
-
-            var contentItem = _contentManager.Get(id, VersionOptions.LivePreview) ?? _contentManager.Get(id, VersionOptions.LivePreviewRequired);
-
-            if (contentItem == null)
-                return HttpNotFound();
-
-            if (!Services.Authorizer.Authorize(Permissions.PreviewContent, contentItem, T("Cannot preview content"))) {
-                return new HttpUnauthorizedResult();
+        private bool AuthorizeContentPreview(ContentItem contentItem, string accessToken) {
+            if(Services.Authorizer.Authorize(Permissions.PreviewContent, contentItem)) {
+                return true;
             }
 
-            var model = _contentManager.BuildDisplay(contentItem);
-
-            return View("Display", model);
+            return Services.ContentManager.ValidateAccessToken(contentItem, accessToken);
         }
     }
 }

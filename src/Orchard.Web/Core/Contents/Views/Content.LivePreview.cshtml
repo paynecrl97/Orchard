@@ -1,6 +1,4 @@
-﻿@using Orchard.ContentManagement
-
-@{ 
+﻿@{ 
     Script.Require("jQuery");
 
     using (Script.Foot())
@@ -9,37 +7,47 @@
             var isResizing = false;
 
             $(function () {
-                $("a#live-preview-toggle").on("click", function (event) {
-                    $("html").toggleClass("live-preview-enabled");
+                $("a#live-preview-start").on("click", function (event) {
+                    $("html").addClass("live-preview-enabled");
+                    $("body").trigger("contentchanged");
 
                     event.stopPropagation();
                 });
 
-                $("input").on("keyup", function () {
+                $("a#live-preview-close").on("click", function (event) {
+                    $("html").removeClass("live-preview-enabled");
+
+                    event.stopPropagation();
+                });
+
+                $("body").on("contentchanged", function () {
                     if (!$("html").hasClass("live-preview-enabled")) {
                         return;
                     }
-                    
-                    var form = $("form");
-                    form.append($('<input type="hidden" name="submit.LivePreview" value="submit.LivePreview" />'));
 
-                    var data = form.serialize();
+                    $.post("@Url.Action("LivePreview", new { contentType = Model.ContentItem.ContentType })", $("form").serialize(), function (result) {
+                        var iframe = $("#live-preview-frame")[0];
 
-                    $.post(form.attr("action"), data, function () {
-                        $("#live-preview-frame")[0].contentDocument.location.reload(true);
+                        iframe.contentWindow.document.open('text/html', 'replace');
+                        iframe.contentWindow.document.write(result);
+                        iframe.contentWindow.document.close();
                     });
 
+                });
+
+                $("input, textarea, select").not(".no-live-preview").on("keyup change", function () {
+                    $("body").trigger("contentchanged");
                 });
 
                 var container = $('.edit-item'),
                     leftCol = $('.edit-item-content'),
                     rightCol = $('.edit-item-right-column'),
-                    handle = $('<div class="resize-handle" />');
-
-                rightCol.append(handle);
+                    handle = $('.resize-handle');
 
                 handle.on('mousedown', function (e) {
                     isResizing = true;
+
+                    //can we lay a div over the iframe?
                 });
 
                 $(document).on('mousemove', function (e) {
@@ -60,6 +68,12 @@
     }
 }
 
-<a href="#" id="live-preview-toggle">@T("Toggle Live Preview")</a>
 
-<iframe id="live-preview-frame" src="@Url.Action("LivePreview", "Item", new { Model.ContentPart.Id, area = "Contents" })"> </iframe>
+<div class="resize-handle"></div>
+
+<div class="actions">
+    <a href="#" id="live-preview-start" class="button button-green hide-on-live-preview">@T("Live Preview")</a>
+    <a href="#" id="live-preview-close" class="button button-green show-on-live-preview">@T("Close Live Preview")</a>
+</div>
+
+<iframe id="live-preview-frame" src="about:blank"> </iframe>

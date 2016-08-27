@@ -17,7 +17,7 @@
         }
 
         if (Authorizer.Authorize(Permissions.PreviewContent, contentPart)) {
-            @Html.ActionLink(T("Preview").Text, "Display", "Item", new { area = "Contents", id = ((ContentItem)Model.ContentPart.ContentItem).Id, version = ((ContentItem)Model.ContentPart.ContentItem).Version }, new { })
+            @Html.ActionLink(T("Preview").Text, "Display", "Item", new { area = "Contents", id = contentPart.Id, version = contentPart.ContentItem.Version }, new { })
             @T(" | ")
         }
     }
@@ -29,7 +29,11 @@
 } else {
     if (contentPart.HasDraft()) {
         if (Authorizer.Authorize(Permissions.PreviewContent, contentPart)) {
-            @Html.ActionLink(T("Preview").Text, "Display", "Item", new { area = "Contents", id = ((ContentItem)Model.ContentPart.ContentItem).Id, version = ((ContentItem)Model.ContentPart.ContentItem).Version }, new { })
+            @Html.ActionLink(T("Preview").Text, "Display", "Item", new { area = "Contents", id = contentPart.Id, version = contentPart.ContentItem.Version }, new { })
+            @T(" | ")
+        }
+        if (Authorizer.Authorize(Permissions.PreviewContent, contentPart)) {
+            @Html.ActionLink(T("Create Preview Link").Text, "CreateAccessToken", "Admin", new { area = "Contents", id = contentPart.Id, version = contentPart.ContentItem.Version, returnUrl = Request.ToUrlString() }, new { itemprop = "UnsafeUrl" })
             @T(" | ")
         }
     }
