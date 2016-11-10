@@ -18,8 +18,8 @@ namespace Orchard.Core.Contents {
         public static readonly Permission ViewOwnContent = new Permission { Description = "View own content", Name = "ViewOwnContent", ImpliedBy = new[] { ViewContent } };
         public static readonly Permission PreviewContent = new Permission { Description = "Preview content", Name = "PreviewContent", ImpliedBy = new[] { EditContent, PublishContent } };
         public static readonly Permission PreviewOwnContent = new Permission { Description = "Preview own content", Name = "PreviewOwnContent", ImpliedBy = new[] { PreviewContent } };
-        public static readonly Permission CreatePreviewAccessToken = new Permission { Description = "Create or regenerate Access Tokens for content previews", Name = "CreatePreviewAccessToken", ImpliedBy = new[] { PreviewContent } };
-        public static readonly Permission CreatePreviewAccessTokenOwnContent = new Permission { Description = "Create or regenerate Access Tokens for content previews (own content only)", Name = "CreatePreviewAccessTokenOwnContent", ImpliedBy = new[] { PreviewOwnContent } };
+        public static readonly Permission CreatePreviewAccessToken = new Permission { Description = "Create and revoke Access Tokens for content previews", Name = "CreatePreviewAccessToken", ImpliedBy = new[] { PreviewContent } };
+        public static readonly Permission CreatePreviewAccessTokenOwnContent = new Permission { Description = "Create and revoke Access Tokens for content previews (own content only)", Name = "CreatePreviewAccessTokenOwnContent", ImpliedBy = new[] { PreviewOwnContent, CreatePreviewAccessToken } };
 
 
         public static readonly Permission MetaListContent = new Permission { ImpliedBy = new[] { EditOwnContent, PublishOwnContent, DeleteOwnContent } };

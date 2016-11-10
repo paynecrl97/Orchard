@@ -86,6 +86,7 @@ namespace Orchard.ContentManagement {
         void Remove(ContentItem contentItem);
 
         string GenerateAccessToken(ContentItem contentItem);
+        void RevokeAccessToken(ContentItem contentItem);
         bool ValidateAccessToken(ContentItem contentItem, string accessToken);
 
         /// <summary>

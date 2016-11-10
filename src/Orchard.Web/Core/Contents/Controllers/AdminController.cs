@@ -410,7 +410,21 @@ namespace Orchard.Core.Contents.Controllers {
 
             _contentManager.GenerateAccessToken(contentItem);
 
-            Services.Notifier.Success(T("Access Token created. The public preview URL is <a href=\"{0}\">{0}</a>", Url.ItemPreviewUrl(contentItem)));
+            Services.Notifier.Success(T("Public previews enabled. The public preview URL is <a href=\"{0}\">{0}</a>.", Url.ItemPreviewUrl(contentItem)));
+
+            return this.RedirectLocal(returnUrl, () => RedirectToAction("List"));
+        }
+
+        [HttpPost]
+        public ActionResult RevokeAccessToken(int id, int version, string returnUrl) {
+            var contentItem = _contentManager.Get(id, VersionOptions.Number(version));
+
+            if (!Services.Authorizer.Authorize(Permissions.CreatePreviewAccessToken, contentItem, T("You don't have the correct permissions to revoke preview access tokens")))
+                return new HttpUnauthorizedResult();
+
+            _contentManager.RevokeAccessToken(contentItem);
+
+            Services.Notifier.Success(T("Public previews disabled. The private preview URL is <a href=\"{0}\">{0}</a>. All previous public preview URLs have been revoked.", Url.ItemPreviewUrl(contentItem)));
 
             return this.RedirectLocal(returnUrl, () => RedirectToAction("List"));
         }

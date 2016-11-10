@@ -451,6 +451,10 @@ namespace Orchard.ContentManagement {
             return contentItem.VersionRecord.AccessToken;
         }
 
+        public void RevokeAccessToken(ContentItem contentItem) {
+            contentItem.VersionRecord.AccessToken = null;
+        }
+
         public virtual bool ValidateAccessToken(ContentItem contentItem, string accessToken) {
             if(string.IsNullOrEmpty(contentItem.VersionRecord.AccessToken)) {
                 return false;

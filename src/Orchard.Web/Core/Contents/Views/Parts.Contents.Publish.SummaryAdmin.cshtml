@@ -11,13 +11,21 @@
     @T(" | ")
 
     if (contentPart.HasDraft()) {
-        if (Authorizer.Authorize(Permissions.PublishContent, contentPart)) {
+        if (Authorizer.Authorize(Permissions.PublishContent, contentPart) || contentPart.HasPublicPreviewUrl()) {
             @Html.Link(T("Publish Draft").Text, Url.Action("Publish", "Admin", new {area = "Contents", id = contentPart.ContentItem.Id, returnUrl = Request.ToUrlString()}), new {itemprop = "UnsafeUrl"})
             @T(" | ")
         }
 
         if (Authorizer.Authorize(Permissions.PreviewContent, contentPart)) {
-            @Html.ActionLink(T("Preview").Text, "Display", "Item", new { area = "Contents", id = contentPart.Id, version = contentPart.ContentItem.Version }, new { })
+            @Html.Link(T("Preview").Text, Url.ItemPreviewUrl(contentPart))
+            @T(" | ")
+        }
+        if (Authorizer.Authorize(Permissions.CreatePreviewAccessToken, contentPart)) {
+            if (contentPart.HasPublicPreviewUrl()) {
+                @Html.ActionLink(T("Disable Public Previews").Text, "RevokeAccessToken", "Admin", new { area = "Contents", id = contentPart.Id, version = contentPart.ContentItem.Version, returnUrl = Request.ToUrlString() }, new { itemprop = "UnsafeUrl" })}
+            else {
+                @Html.ActionLink(T("Allow Public Previews").Text, "CreateAccessToken", "Admin", new { area = "Contents", id = contentPart.Id, version = contentPart.ContentItem.Version, returnUrl = Request.ToUrlString() }, new { itemprop = "UnsafeUrl" })
+            }
             @T(" | ")
         }
     }
@@ -28,12 +36,16 @@
     }
 } else {
     if (contentPart.HasDraft()) {
-        if (Authorizer.Authorize(Permissions.PreviewContent, contentPart)) {
-            @Html.ActionLink(T("Preview").Text, "Display", "Item", new { area = "Contents", id = contentPart.Id, version = contentPart.ContentItem.Version }, new { })
+        if (Authorizer.Authorize(Permissions.PreviewContent, contentPart) || contentPart.HasPublicPreviewUrl()) {
+            @Html.Link(T("Preview").Text, Url.ItemPreviewUrl(contentPart))
             @T(" | ")
         }
-        if (Authorizer.Authorize(Permissions.PreviewContent, contentPart)) {
-            @Html.ActionLink(T("Create Preview Link").Text, "CreateAccessToken", "Admin", new { area = "Contents", id = contentPart.Id, version = contentPart.ContentItem.Version, returnUrl = Request.ToUrlString() }, new { itemprop = "UnsafeUrl" })
+        if (Authorizer.Authorize(Permissions.CreatePreviewAccessToken, contentPart)) {
+            if (contentPart.HasPublicPreviewUrl()) {
+                @Html.ActionLink(T("Disable Public Previews").Text, "RevokeAccessToken", "Admin", new { area = "Contents", id = contentPart.Id, version = contentPart.ContentItem.Version, returnUrl = Request.ToUrlString() }, new { itemprop = "UnsafeUrl" })}
+            else {
+                @Html.ActionLink(T("Allow Public Previews").Text, "CreateAccessToken", "Admin", new { area = "Contents", id = contentPart.Id, version = contentPart.ContentItem.Version, returnUrl = Request.ToUrlString() }, new { itemprop = "UnsafeUrl" })
+            }
             @T(" | ")
         }
     }

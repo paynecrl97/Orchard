@@ -231,6 +231,9 @@ namespace Orchard.ContentManagement {
                        && ((content.ContentItem.VersionRecord.Published == false)
                            || (content.ContentItem.VersionRecord.Published && content.ContentItem.VersionRecord.Latest == false)));
         }
+        public static bool HasPublicPreviewUrl(this IContent content) {
+            return HasDraft(content) && !string.IsNullOrEmpty(content.ContentItem?.VersionRecord?.AccessToken);
+        }
         public static bool HasPublished(this IContent content) {
             return content.IsPublished() || content.ContentItem.ContentManager.Get(content.ContentItem.Id, VersionOptions.Published) != null;
         }
